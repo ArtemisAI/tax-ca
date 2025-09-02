@@ -7,6 +7,7 @@ const config = {
     rootDir: './../',
     roots: [
         '<rootDir>/src',
+        '<rootDir>/tests',
     ],
 
     collectCoverageFrom: ['<rootDir>/src/**/*.{js,ts}'],
