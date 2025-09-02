@@ -1,4 +1,5 @@
-import { ProvinceCode } from '../../../src/misc';
+// Define ProvinceCode type locally to avoid import issues  
+export type ProvinceCode = 'AB' | 'BC' | 'MB' | 'NB' | 'NL' | 'NS' | 'NT' | 'NU' | 'ON' | 'PE' | 'QC' | 'SK' | 'YT';
 
 export interface ApiResponse<T = any> {
   success: boolean;

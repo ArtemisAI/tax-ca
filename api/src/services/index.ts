@@ -1,18 +1,22 @@
-import {
+// Import from compiled JS files in dist directory
+const {
   getTotalTaxAmount,
   getFederalTaxAmount,
   getProvincialTaxAmount,
   getRate,
   TAX_BRACKETS,
   getTaxRates
-} from '../../../../src/taxes/income-tax';
-import { getCapitalGainsTaxableAmount } from '../../../../src/investments/non-registered-savings-plan';
-import { CPP } from '../../../../src/pension/canada-pension-plan';
-import { QPP } from '../../../../src/pension/quebec-pension-plan';
-import { EI } from '../../../../src/taxes/employment-insurance';
-import { ELIGIBLE_DIVIDEND, NON_ELIGIBLE_DIVIDEND } from '../../../../src/taxes/dividend-credit';
-import { PROVINCIAL_CODES, ProvinceCode } from '../../../../src/misc';
-import { roundToPrecision } from '../../../../src/utils/math';
+} = require('../../../../dist/taxes/income-tax.js');
+
+const { getCapitalGainsTaxableAmount } = require('../../../../dist/investments/non-registered-savings-plan.js');
+const { CPP } = require('../../../../dist/pension/canada-pension-plan.js');
+const { QPP } = require('../../../../dist/pension/quebec-pension-plan.js');
+const { EI } = require('../../../../dist/taxes/employment-insurance.js');
+const { ELIGIBLE_DIVIDEND, NON_ELIGIBLE_DIVIDEND } = require('../../../../dist/taxes/dividend-credit.js');
+const { roundToPrecision } = require('../../../../dist/utils/math.js');
+
+// Define ProvinceCode type locally
+type ProvinceCode = 'AB' | 'BC' | 'MB' | 'NB' | 'NL' | 'NS' | 'NT' | 'NU' | 'ON' | 'PE' | 'QC' | 'SK' | 'YT';
 import {
   IncomeTaxRequest,
   IncomeTaxResponse,
@@ -166,7 +170,7 @@ export class DataService {
       year,
       province,
       federal: {
-        rates: federalBracket.RATES.map(rate => ({
+        rates: federalBracket.RATES.map((rate: any) => ({
           from: rate.FROM,
           to: rate.TO,
           rate: rate.RATE
@@ -175,7 +179,7 @@ export class DataService {
         taxCreditRate: federalBracket.TAX_CREDIT_RATE
       },
       provincial: {
-        rates: provincialBracket.RATES.map(rate => ({
+        rates: provincialBracket.RATES.map((rate: any) => ({
           from: rate.FROM,
           to: rate.TO,
           rate: rate.RATE

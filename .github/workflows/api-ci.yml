@@ -1,0 +1,69 @@
+name: API CI/CD
+
+on:
+  pull_request:
+    paths:
+      - 'api/**'
+      - 'src/**'
+      - 'package.json'
+      - 'yarn.lock'
+  push:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+      - 'src/**'
+      - 'package.json'
+      - 'yarn.lock'
+
+jobs:
+  api-lint-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: yarn install --immutable
+        
+      - name: Build main library
+        run: yarn build
+        
+      - name: Lint code
+        run: yarn eslint
+        
+      - name: Run main tests
+        run: yarn test:ci
+        
+      - name: Build API
+        run: yarn build:api
+        
+      - name: Run API tests
+        run: yarn test:api --coverage
+        
+      - name: Upload coverage reports
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: api-tests
+          
+  api-security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run security audit
+        run: yarn audit --groups dependencies
+        
+      - name: Check for vulnerabilities
+        run: yarn npm audit --environment production

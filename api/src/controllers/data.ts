@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { DataService } from '../services';
 import { ApiResponse } from '../types';
-import { ProvinceCode } from '../../../../src/misc';
+// Define ProvinceCode type locally to avoid import issues
+type ProvinceCode = 'AB' | 'BC' | 'MB' | 'NB' | 'NL' | 'NS' | 'NT' | 'NU' | 'ON' | 'PE' | 'QC' | 'SK' | 'YT';
 
 const dataService = new DataService();
 
