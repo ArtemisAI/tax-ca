@@ -3,10 +3,10 @@
  * Tests both eligible and non-eligible dividend tax credits by province
  */
 
-import { 
-    ELIGIBLE_DIVIDEND, 
-    NON_ELIGIBLE_DIVIDEND, 
-    DividendTaxCreditRate 
+import {
+    ELIGIBLE_DIVIDEND,
+    NON_ELIGIBLE_DIVIDEND,
+    DividendTaxCreditRate,
 } from '../../../src/taxes/dividend-credit';
 import { ProvinceCode, FederalCode } from '../../../src/misc';
 
@@ -27,7 +27,7 @@ describe('Dividend Credit', () => {
         it('should implement DividendTaxCreditRate interface correctly', () => {
             const eligible: DividendTaxCreditRate = ELIGIBLE_DIVIDEND;
             const nonEligible: DividendTaxCreditRate = NON_ELIGIBLE_DIVIDEND;
-            
+
             expect(eligible.GROSS_UP).toBeDefined();
             expect(nonEligible.GROSS_UP).toBeDefined();
         });
@@ -66,14 +66,14 @@ describe('Dividend Credit', () => {
         });
 
         it('should have rates for all provinces and territories for eligible dividends', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(ELIGIBLE_DIVIDEND[province]).toBeDefined();
                 expect(typeof ELIGIBLE_DIVIDEND[province]).toBe('number');
             });
         });
 
         it('should have rates for all provinces and territories for non-eligible dividends', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(NON_ELIGIBLE_DIVIDEND[province]).toBeDefined();
                 expect(typeof NON_ELIGIBLE_DIVIDEND[province]).toBe('number');
             });
@@ -98,24 +98,22 @@ describe('Dividend Credit', () => {
         const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
         it('should have all rates as positive numbers', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(ELIGIBLE_DIVIDEND[province]).toBeGreaterThan(0);
                 expect(NON_ELIGIBLE_DIVIDEND[province]).toBeGreaterThan(0);
             });
         });
 
         it('should have rates below 0.2 (20%)', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(ELIGIBLE_DIVIDEND[province]).toBeLessThan(0.2);
                 expect(NON_ELIGIBLE_DIVIDEND[province]).toBeLessThan(0.2);
             });
         });
 
         it('should generally have higher eligible dividend rates', () => {
-            const provincesWithHigherEligible = provinces.filter(province => 
-                ELIGIBLE_DIVIDEND[province] > NON_ELIGIBLE_DIVIDEND[province]
-            );
-            
+            const provincesWithHigherEligible = provinces.filter((province) => ELIGIBLE_DIVIDEND[province] > NON_ELIGIBLE_DIVIDEND[province]);
+
             // Most provinces should have higher eligible dividend rates
             expect(provincesWithHigherEligible.length).toBeGreaterThan(provinces.length * 0.7);
         });

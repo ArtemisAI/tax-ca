@@ -87,7 +87,7 @@ describe('Quebec Parental Insurance Plan (QPIP)', () => {
         it('should cap premiums at maximum insurable earnings', () => {
             const maxPremiumSalaried = QPIP.MAX_INSURABLE_EARNINGS * QPIP.PREMIUM_RATES.SALARIED;
             const maxPremiumSelfEmployed = QPIP.MAX_INSURABLE_EARNINGS * QPIP.PREMIUM_RATES.SELF_EMPLOYED;
-            
+
             expect(maxPremiumSalaried).toBeCloseTo(484.12, 2);
             expect(maxPremiumSelfEmployed).toBeCloseTo(860.44, 2);
         });
@@ -97,7 +97,7 @@ describe('Quebec Parental Insurance Plan (QPIP)', () => {
             const salariedPremium = earnings * QPIP.PREMIUM_RATES.SALARIED;
             const selfEmployedPremium = earnings * QPIP.PREMIUM_RATES.SELF_EMPLOYED;
             const difference = selfEmployedPremium - salariedPremium;
-            
+
             expect(difference).toBeGreaterThan(0);
             expect(difference).toBeCloseTo(307.2, 2);
         });

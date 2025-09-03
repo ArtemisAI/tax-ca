@@ -82,7 +82,7 @@ describe('Employment Insurance (EI)', () => {
         it('should cap premiums at maximum insurable earnings', () => {
             const maxPremiumCA = EI.MAX_INSURABLE_EARNINGS * EI.PREMIUM_RATES.CA;
             const maxPremiumQC = EI.MAX_INSURABLE_EARNINGS * EI.PREMIUM_RATES.QC;
-            
+
             expect(maxPremiumCA).toBeCloseTo(1077.48, 2);
             expect(maxPremiumQC).toBeCloseTo(860.67, 2);
         });

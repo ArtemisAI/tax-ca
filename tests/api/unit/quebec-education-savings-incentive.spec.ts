@@ -104,10 +104,10 @@ describe('Quebec Education Savings Incentive (QESI)', () => {
 
         it('should not exceed maximum grant over lifetime', () => {
             const yearsEligible = 18; // 0 to 17 years old
-            const maxYearlyGrant = QuebecEducationSavingsIncentive.MAX_AMOUNT_YEARLY_FOR_GRANT * 
-                                   QuebecEducationSavingsIncentive.YEARLY_GRANT_PERCENT;
+            const maxYearlyGrant = QuebecEducationSavingsIncentive.MAX_AMOUNT_YEARLY_FOR_GRANT
+                                   * QuebecEducationSavingsIncentive.YEARLY_GRANT_PERCENT;
             const maxPossibleGrant = maxYearlyGrant * yearsEligible;
-            
+
             // The actual maximum should be enforced at the lifetime level
             expect(QuebecEducationSavingsIncentive.MAX_GRANT).toBeLessThan(maxPossibleGrant);
         });
@@ -117,7 +117,7 @@ describe('Quebec Education Savings Incentive (QESI)', () => {
         it('should provide additional benefits for lower income families', () => {
             const lowIncomeRate = QuebecEducationSavingsIncentive.SUPP_GRANT_PERCENT.LOW_INCOME;
             const mediumIncomeRate = QuebecEducationSavingsIncentive.SUPP_GRANT_PERCENT.MEDIUM_INCOME;
-            
+
             expect(lowIncomeRate).toBeGreaterThan(mediumIncomeRate);
             expect(lowIncomeRate).toBeGreaterThan(0);
             expect(mediumIncomeRate).toBeGreaterThan(0);

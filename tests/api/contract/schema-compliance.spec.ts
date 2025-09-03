@@ -33,14 +33,14 @@ describe('API Contract Tests', () => {
             it('should handle inflation parameters correctly', () => {
                 const baseResult = getFederalTaxAmount('ON', 50000, 0, 0, 0);
                 const inflatedResult = getFederalTaxAmount('ON', 50000, 0.02, 5, 0);
-                
+
                 expect(typeof baseResult).toBe('number');
                 expect(typeof inflatedResult).toBe('number');
             });
 
             it('should accept credits object parameter', () => {
                 const creditAmount = 2500; // Convert credits to a simple number
-                
+
                 expect(() => getFederalTaxAmount('ON', 50000, 0, 0, creditAmount)).not.toThrow();
                 const result = getFederalTaxAmount('ON', 50000, 0, 0, creditAmount);
                 expect(typeof result).toBe('number');
@@ -56,8 +56,8 @@ describe('API Contract Tests', () => {
 
             it('should handle all Canadian provinces and territories', () => {
                 const jurisdictions = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-                
-                jurisdictions.forEach(province => {
+
+                jurisdictions.forEach((province) => {
                     expect(() => getProvincialTaxAmount(province as any, 50000, 0, 0, 0)).not.toThrow();
                     const result = getProvincialTaxAmount(province as any, 50000, 0, 0, 0);
                     expect(typeof result).toBe('number');
@@ -67,7 +67,7 @@ describe('API Contract Tests', () => {
             it('should return different values for different provinces', () => {
                 const onResult = getProvincialTaxAmount('ON', 75000, 0, 0, 0);
                 const qcResult = getProvincialTaxAmount('QC', 75000, 0, 0, 0);
-                
+
                 expect(onResult).not.toBe(qcResult);
             });
 
@@ -126,8 +126,8 @@ describe('API Contract Tests', () => {
                 // QPP should have same interface as CPP
                 const cppProperties = Object.keys(CPP);
                 const qppProperties = Object.keys(QPP);
-                
-                cppProperties.forEach(prop => {
+
+                cppProperties.forEach((prop) => {
                     expect(qppProperties).toContain(prop);
                 });
             });
@@ -149,7 +149,7 @@ describe('API Contract Tests', () => {
         it('should have required structure', () => {
             expect(EI).toHaveProperty('MAX_INSURABLE_EARNINGS');
             expect(EI).toHaveProperty('PREMIUM_RATES');
-            
+
             expect(typeof EI.MAX_INSURABLE_EARNINGS).toBe('number');
             expect(typeof EI.PREMIUM_RATES).toBe('object');
         });
@@ -157,7 +157,7 @@ describe('API Contract Tests', () => {
         it('should have federal and Quebec rates', () => {
             expect(EI.PREMIUM_RATES).toHaveProperty('CA');
             expect(EI.PREMIUM_RATES).toHaveProperty('QC');
-            
+
             expect(typeof EI.PREMIUM_RATES.CA).toBe('number');
             expect(typeof EI.PREMIUM_RATES.QC).toBe('number');
         });
@@ -175,7 +175,7 @@ describe('API Contract Tests', () => {
         it('should have required structure', () => {
             expect(QPIP).toHaveProperty('MAX_INSURABLE_EARNINGS');
             expect(QPIP).toHaveProperty('PREMIUM_RATES');
-            
+
             expect(typeof QPIP.MAX_INSURABLE_EARNINGS).toBe('number');
             expect(typeof QPIP.PREMIUM_RATES).toBe('object');
         });
@@ -183,7 +183,7 @@ describe('API Contract Tests', () => {
         it('should have employment type specific rates', () => {
             expect(QPIP.PREMIUM_RATES).toHaveProperty('SALARIED');
             expect(QPIP.PREMIUM_RATES).toHaveProperty('SELF_EMPLOYED');
-            
+
             expect(typeof QPIP.PREMIUM_RATES.SALARIED).toBe('number');
             expect(typeof QPIP.PREMIUM_RATES.SELF_EMPLOYED).toBe('number');
         });
@@ -197,7 +197,7 @@ describe('API Contract Tests', () => {
         it('should have both dividend types', () => {
             expect(ELIGIBLE_DIVIDEND).toBeDefined();
             expect(NON_ELIGIBLE_DIVIDEND).toBeDefined();
-            
+
             expect(typeof ELIGIBLE_DIVIDEND).toBe('object');
             expect(typeof NON_ELIGIBLE_DIVIDEND).toBe('object');
         });
@@ -205,7 +205,7 @@ describe('API Contract Tests', () => {
         it('should have gross-up factors', () => {
             expect(ELIGIBLE_DIVIDEND).toHaveProperty('GROSS_UP');
             expect(NON_ELIGIBLE_DIVIDEND).toHaveProperty('GROSS_UP');
-            
+
             expect(typeof ELIGIBLE_DIVIDEND.GROSS_UP).toBe('number');
             expect(typeof NON_ELIGIBLE_DIVIDEND.GROSS_UP).toBe('number');
         });
@@ -213,15 +213,15 @@ describe('API Contract Tests', () => {
         it('should have federal rates', () => {
             expect(ELIGIBLE_DIVIDEND).toHaveProperty('CA');
             expect(NON_ELIGIBLE_DIVIDEND).toHaveProperty('CA');
-            
+
             expect(typeof ELIGIBLE_DIVIDEND.CA).toBe('number');
             expect(typeof NON_ELIGIBLE_DIVIDEND.CA).toBe('number');
         });
 
         it('should have all provincial rates', () => {
             const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 expect(ELIGIBLE_DIVIDEND).toHaveProperty(province);
                 expect(NON_ELIGIBLE_DIVIDEND).toHaveProperty(province);
                 expect(typeof ELIGIBLE_DIVIDEND[province as keyof typeof ELIGIBLE_DIVIDEND]).toBe('number');
@@ -240,7 +240,7 @@ describe('API Contract Tests', () => {
         it('should have required structure', () => {
             expect(TuitionFees).toHaveProperty('TuitionFeesData');
             expect(TuitionFees).toHaveProperty('getTuitionFeesByProvinceCode');
-            
+
             expect(typeof TuitionFees.TuitionFeesData).toBe('object');
             expect(typeof TuitionFees.getTuitionFeesByProvinceCode).toBe('function');
         });
@@ -251,8 +251,8 @@ describe('API Contract Tests', () => {
 
         it('should return numbers for valid province codes', () => {
             const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 const fee = TuitionFees.getTuitionFeesByProvinceCode(province as any);
                 expect(typeof fee).toBe('number');
                 expect(fee).toBeGreaterThan(0);
@@ -261,8 +261,8 @@ describe('API Contract Tests', () => {
 
         it('should maintain consistency between data access methods', () => {
             const provinces = ['ON', 'QC', 'BC', 'AB'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 const directAccess = TuitionFees.TuitionFeesData[province as keyof typeof TuitionFees.TuitionFeesData];
                 const functionAccess = TuitionFees.getTuitionFeesByProvinceCode(province as any);
                 expect(directAccess).toBe(functionAccess);
@@ -273,9 +273,9 @@ describe('API Contract Tests', () => {
     describe('Cross-Module Contract Consistency', () => {
         it('should maintain consistent province code usage', () => {
             const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
+
             // All modules should accept the same province codes
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(() => getFederalTaxAmount(province as any, 50000, 0, 0, 0)).not.toThrow();
                 expect(() => getProvincialTaxAmount(province as any, 50000, 0, 0, 0)).not.toThrow();
                 expect(() => TuitionFees.getTuitionFeesByProvinceCode(province as any)).not.toThrow();
@@ -285,11 +285,11 @@ describe('API Contract Tests', () => {
         it('should maintain consistent number formatting', () => {
             const result1 = getFederalTaxAmount('ON', 50000, 0, 0, 0);
             const result2 = getProvincialTaxAmount('ON', 50000, 0, 0, 0);
-            
+
             // Results should be finite numbers
             expect(Number.isFinite(result1)).toBe(true);
             expect(Number.isFinite(result2)).toBe(true);
-            
+
             // Should not return NaN
             expect(Number.isNaN(result1)).toBe(false);
             expect(Number.isNaN(result2)).toBe(false);
@@ -306,7 +306,7 @@ describe('API Contract Tests', () => {
             testCases.forEach(({ province, income, expected }) => {
                 const federalResult = getFederalTaxAmount(province as any, income, 0, 0, 0);
                 const provincialResult = getProvincialTaxAmount(province as any, income, 0, 0, 0);
-                
+
                 expect(typeof federalResult).toBe(expected);
                 expect(typeof provincialResult).toBe(expected);
             });

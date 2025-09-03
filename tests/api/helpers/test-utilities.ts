@@ -31,7 +31,7 @@ export interface PerformanceMetrics {
  */
 export function calculateTaxForPersona(persona: UserPersona): TaxCalculationResult {
     const totalIncome = Object.values(persona.income).reduce((sum, amount) => sum + amount, 0);
-    
+
     const federalTax = getFederalTaxAmount(
         persona.province as any,
         totalIncome,
@@ -39,7 +39,7 @@ export function calculateTaxForPersona(persona: UserPersona): TaxCalculationResu
         0,
         0,
     );
-    
+
     const provincialTax = getProvincialTaxAmount(
         persona.province as any,
         totalIncome,
@@ -47,11 +47,11 @@ export function calculateTaxForPersona(persona: UserPersona): TaxCalculationResu
         0,
         0,
     );
-    
+
     const totalTax = federalTax + provincialTax;
     const effectiveRate = totalIncome > 0 ? (totalTax / totalIncome) * 100 : 0;
     const afterTaxIncome = totalIncome - totalTax;
-    
+
     // Calculate marginal rate by testing small income increase
     const marginTestIncome = totalIncome + 1000;
     const marginFederalTax = getFederalTaxAmount(
@@ -70,7 +70,7 @@ export function calculateTaxForPersona(persona: UserPersona): TaxCalculationResu
     );
     const marginTotalTax = marginFederalTax + marginProvincialTax;
     const marginalRate = ((marginTotalTax - totalTax) / 1000) * 100;
-    
+
     return {
         federalTax,
         provincialTax,
@@ -90,20 +90,20 @@ export function measurePerformance(fn: () => void, iterations: number = 1000): P
     if (global.gc) {
         global.gc();
     }
-    
+
     const memoryBefore = process.memoryUsage().heapUsed;
     const startTime = performance.now();
-    
+
     for (let i = 0; i < iterations; i++) {
         fn();
     }
-    
+
     const endTime = performance.now();
     const memoryAfter = process.memoryUsage().heapUsed;
-    
+
     const executionTime = endTime - startTime;
     const calculationsPerSecond = (iterations / executionTime) * 1000;
-    
+
     return {
         executionTime,
         memoryUsage: {
@@ -123,35 +123,35 @@ export function validateTaxResult(result: TaxCalculationResult): boolean {
     if (result.federalTax < 0 || result.provincialTax < 0) {
         return false;
     }
-    
+
     if (result.totalTax !== result.federalTax + result.provincialTax) {
         return false;
     }
-    
+
     if (result.afterTaxIncome !== result.totalIncome - result.totalTax) {
         return false;
     }
-    
+
     // Effective rate should be reasonable
     if (result.effectiveRate < 0 || result.effectiveRate > 60) {
         return false;
     }
-    
+
     // Marginal rate should be reasonable
     if (result.marginalRate < 0 || result.marginalRate > 55) {
         return false;
     }
-    
+
     // High earners should pay more tax
     if (result.totalIncome > 100000 && result.effectiveRate < 15) {
         return false;
     }
-    
+
     // Low earners should pay less tax
     if (result.totalIncome < 30000 && result.effectiveRate > 25) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -160,12 +160,12 @@ export function validateTaxResult(result: TaxCalculationResult): boolean {
  */
 export function compareProvinces(persona: UserPersona, provinces: string[]): Record<string, TaxCalculationResult> {
     const results: Record<string, TaxCalculationResult> = {};
-    
-    provinces.forEach(province => {
+
+    provinces.forEach((province) => {
         const modifiedPersona = { ...persona, province };
         results[province] = calculateTaxForPersona(modifiedPersona);
     });
-    
+
     return results;
 }
 
@@ -174,10 +174,10 @@ export function compareProvinces(persona: UserPersona, provinces: string[]): Rec
  */
 export function generateExpectations(persona: UserPersona): Partial<TaxCalculationResult> {
     const totalIncome = Object.values(persona.income).reduce((sum, amount) => sum + amount, 0);
-    
+
     // Generate reasonable expectations based on income level and demographics
     let expectedEffectiveRate: number;
-    
+
     if (totalIncome < 20000) {
         expectedEffectiveRate = 5; // Very low
     } else if (totalIncome < 50000) {
@@ -189,21 +189,21 @@ export function generateExpectations(persona: UserPersona): Partial<TaxCalculati
     } else {
         expectedEffectiveRate = 45; // Very high
     }
-    
+
     // Adjust for province
     if (persona.province === 'QC') {
         expectedEffectiveRate += 5; // Quebec has higher rates
     } else if (persona.province === 'AB') {
         expectedEffectiveRate -= 3; // Alberta has lower rates
     }
-    
+
     // Adjust for age (seniors may have benefits)
     if (persona.age >= 65) {
         expectedEffectiveRate -= 3;
     }
-    
+
     const expectedTotalTax = totalIncome * (expectedEffectiveRate / 100);
-    
+
     return {
         effectiveRate: expectedEffectiveRate,
         totalTax: expectedTotalTax,
@@ -224,13 +224,13 @@ export function assertTaxWithinTolerance(
         const maxDiff = expected.totalTax * tolerance;
         expect(diff).toBeLessThanOrEqual(maxDiff);
     }
-    
+
     if (expected.effectiveRate !== undefined) {
         const diff = Math.abs(actual.effectiveRate - expected.effectiveRate);
         const maxDiff = expected.effectiveRate * tolerance;
         expect(diff).toBeLessThanOrEqual(maxDiff);
     }
-    
+
     if (expected.afterTaxIncome !== undefined) {
         const diff = Math.abs(actual.afterTaxIncome - expected.afterTaxIncome);
         const maxDiff = expected.afterTaxIncome * tolerance;
@@ -245,9 +245,9 @@ export function createTestMatrix(): Array<{ income: number; province: string; de
     const incomes = [15000, 30000, 50000, 75000, 100000, 150000, 250000];
     const provinces = ['ON', 'QC', 'BC', 'AB'];
     const matrix: Array<{ income: number; province: string; description: string }> = [];
-    
-    incomes.forEach(income => {
-        provinces.forEach(province => {
+
+    incomes.forEach((income) => {
+        provinces.forEach((province) => {
             matrix.push({
                 income,
                 province,
@@ -255,7 +255,7 @@ export function createTestMatrix(): Array<{ income: number; province: string; de
             });
         });
     });
-    
+
     return matrix;
 }
 
@@ -272,24 +272,24 @@ export function stressTest(testFunction: () => void, options: {
         maxExecutionTime = 5000, // 5 seconds
         maxMemoryIncrease = 50 * 1024 * 1024, // 50MB
     } = options;
-    
+
     const metrics = measurePerformance(testFunction, iterations);
-    
+
     // Check execution time
     if (metrics.executionTime > maxExecutionTime) {
         return false;
     }
-    
+
     // Check memory usage
     if (metrics.memoryUsage.increase > maxMemoryIncrease) {
         return false;
     }
-    
+
     // Check performance degradation
     if (metrics.calculationsPerSecond < 100) { // Minimum 100 calculations per second
         return false;
     }
-    
+
     return true;
 }
 
@@ -299,7 +299,7 @@ export function stressTest(testFunction: () => void, options: {
 export function formatTestResults(results: TaxCalculationResult[]): string {
     let report = '\\nTax Calculation Test Results:\\n';
     report += '================================\\n';
-    
+
     results.forEach((result, index) => {
         report += `Test ${index + 1}:\\n`;
         report += `  Total Income: $${result.totalIncome.toLocaleString()}\\n`;
@@ -311,7 +311,7 @@ export function formatTestResults(results: TaxCalculationResult[]): string {
         report += `  After-Tax Income: $${result.afterTaxIncome.toLocaleString()}\\n`;
         report += '\\n';
     });
-    
+
     return report;
 }
 
@@ -323,20 +323,20 @@ export function benchmarkAgainstKnownResults(persona: UserPersona, expectedResul
     differences: Record<string, number>;
 } {
     const actualResult = calculateTaxForPersona(persona);
-    
+
     const differences = {
         federalTax: Math.abs(actualResult.federalTax - expectedResult.federalTax),
         provincialTax: Math.abs(actualResult.provincialTax - expectedResult.provincialTax),
         totalTax: Math.abs(actualResult.totalTax - expectedResult.totalTax),
         effectiveRate: Math.abs(actualResult.effectiveRate - expectedResult.effectiveRate),
     };
-    
+
     // Consider test passed if differences are within 5%
     const tolerance = 0.05;
     const passed = Object.entries(differences).every(([key, diff]) => {
         const expected = expectedResult[key as keyof TaxCalculationResult] as number;
         return diff <= expected * tolerance;
     });
-    
+
     return { passed, differences };
 }
