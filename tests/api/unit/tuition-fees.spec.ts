@@ -28,14 +28,14 @@ describe('Tuition Fees', () => {
         const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
         it('should have tuition fees for all provinces and territories', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(TuitionFees.TuitionFeesData[province]).toBeDefined();
                 expect(typeof TuitionFees.TuitionFeesData[province]).toBe('number');
             });
         });
 
         it('should have positive tuition fees for all jurisdictions', () => {
-            provinces.forEach(province => {
+            provinces.forEach((province) => {
                 expect(TuitionFees.TuitionFeesData[province]).toBeGreaterThan(0);
             });
         });
@@ -106,8 +106,8 @@ describe('Tuition Fees', () => {
 
         it('should return same values as direct data access', () => {
             const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 expect(TuitionFees.getTuitionFeesByProvinceCode(province))
                     .toBe(TuitionFees.TuitionFeesData[province]);
             });
@@ -117,16 +117,16 @@ describe('Tuition Fees', () => {
     describe('Data validation and reasonableness', () => {
         it('should have Quebec as lowest tuition province', () => {
             const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            const allFees = provinces.map(province => TuitionFees.TuitionFeesData[province]);
+            const allFees = provinces.map((province) => TuitionFees.TuitionFeesData[province]);
             const minFee = Math.min(...allFees);
-            
+
             expect(TuitionFees.TuitionFeesData.QC).toBe(minFee);
         });
 
         it('should have reasonable fee ranges', () => {
             const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 const fee = TuitionFees.TuitionFeesData[province];
                 expect(fee).toBeGreaterThan(3000); // Minimum reasonable tuition
                 expect(fee).toBeLessThan(15000); // Maximum reasonable undergraduate tuition
@@ -136,7 +136,7 @@ describe('Tuition Fees', () => {
         it('should show expected regional patterns', () => {
             // Quebec should have lower fees due to provincial subsidies
             expect(TuitionFees.TuitionFeesData.QC).toBeLessThan(TuitionFees.TuitionFeesData.ON);
-            
+
             // Maritime provinces often have higher fees
             expect(TuitionFees.TuitionFeesData.NS).toBeGreaterThan(TuitionFees.TuitionFeesData.QC);
             expect(TuitionFees.TuitionFeesData.NB).toBeGreaterThan(TuitionFees.TuitionFeesData.QC);
@@ -151,8 +151,8 @@ describe('Tuition Fees', () => {
     describe('Edge cases and error handling', () => {
         it('should handle all valid province codes', () => {
             const provinces: ProvinceCode[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
-            
-            provinces.forEach(province => {
+
+            provinces.forEach((province) => {
                 expect(() => TuitionFees.getTuitionFeesByProvinceCode(province)).not.toThrow();
                 expect(TuitionFees.getTuitionFeesByProvinceCode(province)).toBeGreaterThan(0);
             });
@@ -177,7 +177,7 @@ describe('Tuition Fees', () => {
         it('should maintain data integrity across access methods', () => {
             const directAccess = TuitionFees.TuitionFeesData.BC;
             const functionAccess = TuitionFees.getTuitionFeesByProvinceCode('BC');
-            
+
             expect(directAccess).toBe(functionAccess);
         });
     });

@@ -344,7 +344,7 @@ export const ALL_PERSONAS: UserPersona[] = [
  * Get persona by ID
  */
 export function getPersonaById(id: string): UserPersona | undefined {
-    return ALL_PERSONAS.find(persona => persona.id === id);
+    return ALL_PERSONAS.find((persona) => persona.id === id);
 }
 
 /**

@@ -73,8 +73,8 @@ describe('Security Tests', () => {
         it('should handle income at tax bracket boundaries', () => {
             // Test at various tax bracket thresholds
             const bracketThresholds = [55867, 111733, 173205, 246752];
-            
-            bracketThresholds.forEach(threshold => {
+
+            bracketThresholds.forEach((threshold) => {
                 expect(() => getFederalTaxAmount('ON', threshold, 0, 0, 0)).not.toThrow();
                 expect(() => getFederalTaxAmount('ON', threshold - 1, 0, 0, 0)).not.toThrow();
                 expect(() => getFederalTaxAmount('ON', threshold + 1, 0, 0, 0)).not.toThrow();
@@ -102,14 +102,14 @@ describe('Security Tests', () => {
         const invalidProvinceCodes = ['XX', 'ZZ', '', '123', 'USA', 'CAD', 'ONTARIO'];
 
         it('should accept all valid province codes', () => {
-            validProvinceCodes.forEach(province => {
+            validProvinceCodes.forEach((province) => {
                 expect(() => getFederalTaxAmount(province as any, 50000, 0, 0, 0)).not.toThrow();
                 expect(() => getProvincialTaxAmount(province as any, 50000, 0, 0, 0)).not.toThrow();
             });
         });
 
         it('should handle invalid province codes gracefully', () => {
-            invalidProvinceCodes.forEach(province => {
+            invalidProvinceCodes.forEach((province) => {
                 // Some invalid province codes may throw errors, which is acceptable behavior
                 try {
                     getFederalTaxAmount(province as any, 50000, 0, 0, 0);
@@ -128,13 +128,13 @@ describe('Security Tests', () => {
             } catch (error) {
                 expect(error).toBeDefined();
             }
-            
+
             try {
                 getFederalTaxAmount('On' as any, 50000, 0, 0, 0);
             } catch (error) {
                 expect(error).toBeDefined();
             }
-            
+
             try {
                 getFederalTaxAmount('oN' as any, 50000, 0, 0, 0);
             } catch (error) {
@@ -146,35 +146,35 @@ describe('Security Tests', () => {
     describe('Rate Limiting and Performance Security', () => {
         it('should handle rapid successive calculations', () => {
             const startTime = performance.now();
-            
+
             for (let i = 0; i < 100; i++) {
                 getFederalTaxAmount('ON', 50000 + i, 0, 0, 0);
             }
-            
+
             const endTime = performance.now();
             const totalTime = endTime - startTime;
-            
+
             // Should complete 100 calculations in reasonable time (< 1 second)
             expect(totalTime).toBeLessThan(1000);
         });
 
         it('should not consume excessive memory with large datasets', () => {
             const initialMemory = process.memoryUsage().heapUsed;
-            
+
             // Generate large dataset
             const largeDataset = [];
             for (let i = 0; i < 1000; i++) {
                 largeDataset.push(generateRandomPersona('young'));
             }
-            
+
             // Process dataset
-            largeDataset.forEach(persona => {
+            largeDataset.forEach((persona) => {
                 getFederalTaxAmount('ON', persona.income.employment, 0, 0, 0);
             });
-            
+
             const finalMemory = process.memoryUsage().heapUsed;
             const memoryIncrease = finalMemory - initialMemory;
-            
+
             // Memory increase should be reasonable (< 50MB)
             expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024);
         });
@@ -184,7 +184,7 @@ describe('Security Tests', () => {
         it('should prevent integer overflow in calculations', () => {
             const largeIncome = 2 ** 53 - 1; // Max safe integer
             expect(() => getFederalTaxAmount('ON', largeIncome, 0, 0, 0)).not.toThrow();
-            
+
             const result = getFederalTaxAmount('ON', largeIncome, 0, 0, 0);
             expect(typeof result).toBe('number');
         });
@@ -193,7 +193,7 @@ describe('Security Tests', () => {
             const income = 50000.99999999999;
             const result1 = getFederalTaxAmount('ON', income, 0, 0, 0);
             const result2 = getFederalTaxAmount('ON', 50001, 0, 0, 0);
-            
+
             // Results should be very close for similar inputs
             expect(Math.abs(result1 - result2)).toBeLessThan(1);
         });
@@ -202,7 +202,7 @@ describe('Security Tests', () => {
             const income = 75000;
             const result1 = getFederalTaxAmount('ON', income, 0, 0, 0);
             const result2 = getFederalTaxAmount('ON', income, 0, 0, 0);
-            
+
             // Same inputs should always produce same outputs
             expect(result1).toBe(result2);
         });
@@ -214,7 +214,7 @@ describe('Security Tests', () => {
                 getFederalTaxAmount('ON', 'malicious-input' as any, 0, 0, 0);
             } catch (error) {
                 const errorMessage = error instanceof Error ? error.message : String(error);
-                
+
                 // Error messages should not contain sensitive data
                 expect(errorMessage).not.toContain('password');
                 expect(errorMessage).not.toContain('secret');
@@ -241,21 +241,21 @@ describe('Security Tests', () => {
         it('should handle repeated calculations without degradation', () => {
             const iterations = 10000;
             const times: number[] = [];
-            
+
             for (let i = 0; i < iterations; i++) {
                 const start = performance.now();
                 getFederalTaxAmount('ON', 50000, 0, 0, 0);
                 const end = performance.now();
                 times.push(end - start);
             }
-            
+
             // Performance should not degrade significantly
             const firstHalf = times.slice(0, iterations / 2);
             const secondHalf = times.slice(iterations / 2);
-            
+
             const avgFirstHalf = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
             const avgSecondHalf = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
-            
+
             // Second half should not be significantly slower than first half
             expect(avgSecondHalf).toBeLessThan(avgFirstHalf * 2);
         });
@@ -263,12 +263,12 @@ describe('Security Tests', () => {
         it('should limit recursion depth implicitly', () => {
             // Test with deeply nested scenarios that might cause stack overflow
             let deeplyNestedIncome = 50000;
-            
+
             for (let i = 0; i < 1000; i++) {
                 deeplyNestedIncome = getFederalTaxAmount('ON', deeplyNestedIncome, 0, 0, 0);
                 if (deeplyNestedIncome <= 0) break; // Prevent infinite loops
             }
-            
+
             // Should complete without stack overflow
             expect(deeplyNestedIncome).toBeGreaterThanOrEqual(0);
         });

@@ -13,6 +13,6 @@ export function addYearsToDate(date: Date, years: number): Date {
 
 export function now(): Date {
     // Use globalThis instead of process for better compatibility
-    const env = (globalThis as any)?.process?.env?.NODE_ENV;
+    const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } })?.process?.env?.NODE_ENV;
     return env === 'test' ? new Date('2020-01-01T12:00:00Z') : new Date();
 }

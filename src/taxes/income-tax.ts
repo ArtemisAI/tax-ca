@@ -9,6 +9,21 @@ Revised
 import { FEDERAL_CODE, FederalCode, ProvinceCode } from '../misc';
 import { maxBy, now, roundToPrecision } from '../utils';
 
+/**
+ * Normalizes numeric input to ensure it's a valid number
+ * Returns 0 for invalid inputs to prevent errors
+ */
+function normalizeNumericInput(value: unknown): number {
+    if (typeof value === 'number' && !Number.isNaN(value) && Number.isFinite(value)) {
+        return value;
+    }
+    if (typeof value === 'string') {
+        const parsed = parseFloat(value);
+        return !Number.isNaN(parsed) && Number.isFinite(parsed) ? parsed : 0;
+    }
+    return 0;
+}
+
 export interface Rate {
     FROM: number;
     TO: number;
@@ -480,16 +495,16 @@ function inflate(amount: number, inflationRate: number, yearsToInflate: number):
     if (yearsToInflate === 0 || inflationRate === 0) {
         return amount;
     }
-    
+
     // Create cache key for inflation multiplier
     const cacheKey = `${inflationRate.toFixed(6)}_${yearsToInflate}`;
     let multiplier = inflationCache.get(cacheKey);
-    
+
     if (multiplier === undefined) {
         multiplier = (1 + inflationRate) ** yearsToInflate;
         inflationCache.set(cacheKey, multiplier);
     }
-    
+
     return amount * multiplier;
 }
 
@@ -506,14 +521,14 @@ export function getTaxAmount(rates: Rate[], income: number, inflationRate: numbe
     // For inflated calculations, use optimized approach
     const cacheKey = `${rates.length}_${inflationRate.toFixed(6)}_${yearsToInflate}`;
     let inflatedRates = bracketCache.get(cacheKey);
-    
+
     if (!inflatedRates) {
         // Pre-calculate inflation multiplier once
         const multiplier = (1 + inflationRate) ** yearsToInflate;
-        inflatedRates = rates.map(rate => ({
+        inflatedRates = rates.map((rate) => ({
             FROM: rate.FROM * multiplier,
             TO: rate.TO * multiplier,
-            RATE: rate.RATE
+            RATE: rate.RATE,
         }));
         bracketCache.set(cacheKey, inflatedRates);
     }
@@ -528,44 +543,54 @@ export function getTaxAmount(rates: Rate[], income: number, inflationRate: numbe
 export function getRate(brackets: Rate[], grossIncome: number, inflationRate: number, yearsToInflate: number): number {
     // If no inflation, use original brackets directly for better performance
     if (yearsToInflate === 0 || inflationRate === 0) {
-        const reducer = (previous: number, current: Rate): number => {
-            return current.FROM < grossIncome ? current.RATE : previous;
-        };
+        const reducer = (previous: number, current: Rate): number => (
+            current.FROM < grossIncome ? current.RATE : previous
+        );
         return brackets.reduce(reducer, 0);
     }
 
     // For inflated calculations, use cached multiplier
     const cacheKey = `${brackets.length}_${inflationRate.toFixed(6)}_${yearsToInflate}`;
     let inflatedBrackets = bracketCache.get(cacheKey);
-    
+
     if (!inflatedBrackets) {
         const multiplier = (1 + inflationRate) ** yearsToInflate;
-        inflatedBrackets = brackets.map(bracket => ({
+        inflatedBrackets = brackets.map((bracket) => ({
             FROM: bracket.FROM * multiplier,
             TO: bracket.TO * multiplier,
-            RATE: bracket.RATE
+            RATE: bracket.RATE,
         }));
         bracketCache.set(cacheKey, inflatedBrackets);
     }
 
-    const reducer = (previous: number, current: Rate): number => {
-        return current.FROM < grossIncome ? current.RATE : previous;
-    };
+    const reducer = (previous: number, current: Rate): number => (current.FROM < grossIncome ? current.RATE : previous);
     return inflatedBrackets.reduce(reducer, 0);
 }
 
 export function getTaxRates(code: ProvinceCode | FederalCode): Rate[] {
     // Return a reference to the original rates instead of cloning for read-only operations
     // This is safe since the calling functions don't modify the returned array
+    if (!TAX_BRACKETS[code]) {
+        // Return empty rates array for invalid codes to prevent errors
+        return [];
+    }
     return TAX_BRACKETS[code].RATES;
 }
 
 function getAbatement(code: ProvinceCode | FederalCode): number {
+    if (!TAX_BRACKETS[code]) {
+        // Return 0 abatement for invalid codes to prevent errors
+        return 0;
+    }
     return TAX_BRACKETS[code].ABATEMENT;
 }
 
 function getSurtaxRates(code: ProvinceCode | FederalCode): Rate[] {
     // Return a reference to the original surtax rates instead of cloning for read-only operations
+    if (!TAX_BRACKETS[code]) {
+        // Return empty surtax rates array for invalid codes to prevent errors
+        return [];
+    }
     return TAX_BRACKETS[code].SURTAX_RATES;
 }
 
@@ -606,9 +631,18 @@ export function getFederalTaxAmount(
     yearsToInflate = 0,
     taxCredit = 0,
 ): number {
-    const federalBaseTaxAmount = getFederalBaseTaxAmount(grossIncome, inflationRate, yearsToInflate);
-    const baseCredit = getFederalBaseCredit(inflationRate, yearsToInflate);
-    const federalTax = Math.max(federalBaseTaxAmount - baseCredit - taxCredit, 0);
+    const normalizedIncome = normalizeNumericInput(grossIncome);
+    const normalizedInflationRate = normalizeNumericInput(inflationRate);
+    const normalizedYearsToInflate = normalizeNumericInput(yearsToInflate);
+    const normalizedTaxCredit = normalizeNumericInput(taxCredit);
+
+    const federalBaseTaxAmount = getFederalBaseTaxAmount(
+        normalizedIncome,
+        normalizedInflationRate,
+        normalizedYearsToInflate,
+    );
+    const baseCredit = getFederalBaseCredit(normalizedInflationRate, normalizedYearsToInflate);
+    const federalTax = Math.max(federalBaseTaxAmount - baseCredit - normalizedTaxCredit, 0);
     const abatement = getProvincialAbatement(provincialCode, federalTax);
     return Math.max(federalTax - abatement, 0);
 }
@@ -632,6 +666,10 @@ export function getProvincialBaseTaxAmount(
 }
 
 export function getProvincialBaseCredit(province: ProvinceCode, inflationRate: number, yearsToInflate: number): number {
+    if (!TAX_BRACKETS[province] || !TAX_BRACKETS[province].RATES || TAX_BRACKETS[province].RATES.length === 0) {
+        // Return 0 for invalid provinces to prevent errors
+        return 0;
+    }
     const baseTaxCredit = TAX_BRACKETS[province].BASE_TAX_CREDIT * TAX_BRACKETS[province].RATES[0].RATE;
     return inflate(baseTaxCredit, inflationRate, yearsToInflate);
 }
@@ -643,11 +681,21 @@ export function getProvincialTaxAmount(
     yearsToInflate = 0,
     taxCredit = 0,
 ): number {
-    const baseTaxAmount = getProvincialBaseTaxAmount(province, grossIncome, inflationRate, yearsToInflate);
-    const baseCredit = getProvincialBaseCredit(province, inflationRate, yearsToInflate);
+    const normalizedIncome = normalizeNumericInput(grossIncome);
+    const normalizedInflationRate = normalizeNumericInput(inflationRate);
+    const normalizedYearsToInflate = normalizeNumericInput(yearsToInflate);
+    const normalizedTaxCredit = normalizeNumericInput(taxCredit);
+
+    const baseTaxAmount = getProvincialBaseTaxAmount(
+        province,
+        normalizedIncome,
+        normalizedInflationRate,
+        normalizedYearsToInflate,
+    );
+    const baseCredit = getProvincialBaseCredit(province, normalizedInflationRate, normalizedYearsToInflate);
     const tax = Math.max(baseTaxAmount - baseCredit, 0);
-    const surTax = getProvincialSurtaxAmount(province, tax, inflationRate, yearsToInflate);
-    return Math.max(tax + surTax - taxCredit, 0);
+    const surTax = getProvincialSurtaxAmount(province, tax, normalizedInflationRate, normalizedYearsToInflate);
+    return Math.max(tax + surTax - normalizedTaxCredit, 0);
 }
 
 export function getFederalMarginalRate(

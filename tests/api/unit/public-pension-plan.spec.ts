@@ -133,7 +133,7 @@ describe('Public Pension Plan Interface', () => {
                     const birthDate = new Date('1960-01-01');
                     const requestDate = new Date('2025-01-01');
                     const factor = plan.getRequestDateFactor(birthDate, requestDate);
-                    
+
                     expect(typeof factor).toBe('number');
                     expect(factor).toBeGreaterThan(0);
                 });
@@ -143,7 +143,7 @@ describe('Public Pension Plan Interface', () => {
                     const requestDate = new Date('2025-01-01');
                     const customRefDate = new Date('2024-01-01');
                     const factor = plan.getRequestDateFactor(birthDate, requestDate, customRefDate);
-                    
+
                     expect(typeof factor).toBe('number');
                     expect(factor).toBeGreaterThan(0);
                 });

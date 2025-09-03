@@ -69,7 +69,7 @@ export function generateRRSPContribution(income: number): number {
 export function generateRandomPersona(profile: 'young' | 'family' | 'retiree' | 'business'): UserPersona {
     const provinces = ['ON', 'QC', 'BC', 'AB', 'MB', 'SK', 'NS', 'NB', 'NL', 'PE'];
     const randomProvince = provinces[Math.floor(Math.random() * provinces.length)];
-    
+
     const basePersona: Partial<UserPersona> = {
         id: `generated-${profile}-${Date.now()}`,
         province: randomProvince,
@@ -239,7 +239,7 @@ export function generateTestScenarios(count: number): TaxCalculationScenario[] {
     for (let i = 0; i < count; i++) {
         const profile = profiles[i % profiles.length];
         const persona = generateRandomPersona(profile);
-        
+
         scenarios.push({
             id: `scenario-${i + 1}`,
             name: `Generated Scenario ${i + 1}: ${profile}`,
@@ -353,12 +353,12 @@ export function generateEdgeCaseScenarios(): TaxCalculationScenario[] {
  */
 export function generatePerformanceTestData(count: number = 1000): UserPersona[] {
     const personas: UserPersona[] = [];
-    
+
     for (let i = 0; i < count; i++) {
         const profiles: Array<'young' | 'family' | 'retiree' | 'business'> = ['young', 'family', 'retiree', 'business'];
         const profile = profiles[i % profiles.length];
         personas.push(generateRandomPersona(profile));
     }
-    
+
     return personas;
 }
