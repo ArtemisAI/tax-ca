@@ -464,30 +464,100 @@ export const TAX_BRACKETS: TaxBrackets = {
     },
 };
 
+// Cache for inflation multipliers to avoid repeated calculations
+const inflationCache = new Map<string, number>();
+
+// Cache for inflated tax brackets to avoid repeated calculations
+const bracketCache = new Map<string, Rate[]>();
+
+// Helper function to clear caches (useful for testing)
+export function clearTaxCalculationCaches(): void {
+    inflationCache.clear();
+    bracketCache.clear();
+}
+
 function inflate(amount: number, inflationRate: number, yearsToInflate: number): number {
-    return amount * ((1 + inflationRate) ** yearsToInflate);
+    if (yearsToInflate === 0 || inflationRate === 0) {
+        return amount;
+    }
+    
+    // Create cache key for inflation multiplier
+    const cacheKey = `${inflationRate.toFixed(6)}_${yearsToInflate}`;
+    let multiplier = inflationCache.get(cacheKey);
+    
+    if (multiplier === undefined) {
+        multiplier = (1 + inflationRate) ** yearsToInflate;
+        inflationCache.set(cacheKey, multiplier);
+    }
+    
+    return amount * multiplier;
 }
 
 export function getTaxAmount(rates: Rate[], income: number, inflationRate: number, yearsToInflate: number): number {
+    // If no inflation, use original rates directly for better performance
+    if (yearsToInflate === 0 || inflationRate === 0) {
+        const reducer = (previous: number, current: Rate): number => {
+            const bracketTax = current.FROM < income ? (Math.min(income, current.TO) - current.FROM) * current.RATE : 0;
+            return previous + bracketTax;
+        };
+        return rates.reduce(reducer, 0);
+    }
+
+    // For inflated calculations, use optimized approach
+    const cacheKey = `${rates.length}_${inflationRate.toFixed(6)}_${yearsToInflate}`;
+    let inflatedRates = bracketCache.get(cacheKey);
+    
+    if (!inflatedRates) {
+        // Pre-calculate inflation multiplier once
+        const multiplier = (1 + inflationRate) ** yearsToInflate;
+        inflatedRates = rates.map(rate => ({
+            FROM: rate.FROM * multiplier,
+            TO: rate.TO * multiplier,
+            RATE: rate.RATE
+        }));
+        bracketCache.set(cacheKey, inflatedRates);
+    }
+
     const reducer = (previous: number, current: Rate): number => {
-        const bracketFrom = inflate(current.FROM, inflationRate, yearsToInflate);
-        const bracketTo = inflate(current.TO, inflationRate, yearsToInflate);
-        const bracketTax = bracketFrom < income ? (Math.min(income, bracketTo) - bracketFrom) * current.RATE : 0;
+        const bracketTax = current.FROM < income ? (Math.min(income, current.TO) - current.FROM) * current.RATE : 0;
         return previous + bracketTax;
     };
-    return rates.reduce(reducer, 0);
+    return inflatedRates.reduce(reducer, 0);
 }
 
 export function getRate(brackets: Rate[], grossIncome: number, inflationRate: number, yearsToInflate: number): number {
+    // If no inflation, use original brackets directly for better performance
+    if (yearsToInflate === 0 || inflationRate === 0) {
+        const reducer = (previous: number, current: Rate): number => {
+            return current.FROM < grossIncome ? current.RATE : previous;
+        };
+        return brackets.reduce(reducer, 0);
+    }
+
+    // For inflated calculations, use cached multiplier
+    const cacheKey = `${brackets.length}_${inflationRate.toFixed(6)}_${yearsToInflate}`;
+    let inflatedBrackets = bracketCache.get(cacheKey);
+    
+    if (!inflatedBrackets) {
+        const multiplier = (1 + inflationRate) ** yearsToInflate;
+        inflatedBrackets = brackets.map(bracket => ({
+            FROM: bracket.FROM * multiplier,
+            TO: bracket.TO * multiplier,
+            RATE: bracket.RATE
+        }));
+        bracketCache.set(cacheKey, inflatedBrackets);
+    }
+
     const reducer = (previous: number, current: Rate): number => {
-        const bracketFrom = inflate(current.FROM, inflationRate, yearsToInflate);
-        return bracketFrom < grossIncome ? current.RATE : previous;
+        return current.FROM < grossIncome ? current.RATE : previous;
     };
-    return brackets.reduce(reducer, 0);
+    return inflatedBrackets.reduce(reducer, 0);
 }
 
 export function getTaxRates(code: ProvinceCode | FederalCode): Rate[] {
-    return structuredClone(TAX_BRACKETS[code].RATES);
+    // Return a reference to the original rates instead of cloning for read-only operations
+    // This is safe since the calling functions don't modify the returned array
+    return TAX_BRACKETS[code].RATES;
 }
 
 function getAbatement(code: ProvinceCode | FederalCode): number {
@@ -495,14 +565,18 @@ function getAbatement(code: ProvinceCode | FederalCode): number {
 }
 
 function getSurtaxRates(code: ProvinceCode | FederalCode): Rate[] {
-    return structuredClone(TAX_BRACKETS[code].SURTAX_RATES);
+    // Return a reference to the original surtax rates instead of cloning for read-only operations
+    return TAX_BRACKETS[code].SURTAX_RATES;
 }
 
 export function getFederalTaxRates(yearsToInflate: number): Rate[] {
     const rates = getTaxRates(FEDERAL_CODE);
     const shouldUse2025Rate = yearsToInflate === 0 && now().getFullYear() === 2025;
     if (shouldUse2025Rate) {
-        rates[0].RATE = CA_LOWEST_TAX_RATE_2025;
+        // Create a shallow copy only when modification is needed
+        const modifiedRates = [...rates];
+        modifiedRates[0] = { ...rates[0], RATE: CA_LOWEST_TAX_RATE_2025 };
+        return modifiedRates;
     }
     return rates;
 }

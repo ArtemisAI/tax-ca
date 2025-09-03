@@ -1,15 +1,19 @@
 {
-  "extends": "@equisoft/typescript-config/tsconfig.standards.json",
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "lib": ["es2020"],
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "noEmitOnError": true,
     "outDir": "dist",
     "baseUrl": "./src/",
     "paths": {},
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src/**/*"

@@ -12,5 +12,7 @@ export function addYearsToDate(date: Date, years: number): Date {
 }
 
 export function now(): Date {
-    return process.env.NODE_ENV === 'test' ? new Date('2020-01-01T12:00:00Z') : new Date();
+    // Use globalThis instead of process for better compatibility
+    const env = (globalThis as any)?.process?.env?.NODE_ENV;
+    return env === 'test' ? new Date('2020-01-01T12:00:00Z') : new Date();
 }
