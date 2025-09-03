@@ -36,11 +36,11 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
             // Calculate potential CPP contributions for both earners
             const primaryPensionableEarnings = Math.min(
                 Math.max(scenario.primaryIncome - basicExemption, 0),
-                ympe - basicExemption
+                ympe - basicExemption,
             );
             const spousePensionableEarnings = Math.min(
                 Math.max(scenario.spouseIncome - basicExemption, 0),
-                ympe - basicExemption
+                ympe - basicExemption,
             );
 
             const primaryCppContribution = primaryPensionableEarnings * contributionRate;
@@ -59,7 +59,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.primaryIncome - (scenario.rrspContributions * 0.6), // Primary earner RRSP portion
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits * 0.6 // Approximate primary portion
+                scenario.federalTaxCredits * 0.6, // Approximate primary portion
             );
 
             // Should be in 20.5% bracket for income over ~$55,867
@@ -73,7 +73,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.spouseIncome - (scenario.rrspContributions * 0.4), // Spouse RRSP portion
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits * 0.4 // Approximate spouse portion
+                scenario.federalTaxCredits * 0.4, // Approximate spouse portion
             );
 
             // Lower income spouse in 15% bracket
@@ -111,7 +111,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             // Should benefit from eligible dependent credit and other single parent benefits
@@ -125,7 +125,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             // BC has different tax structure than Ontario
@@ -139,7 +139,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             const provincialTax = getProvincialTaxAmount(
@@ -147,7 +147,7 @@ describe('Tax Scenario Tests - Family Scenarios', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             const totalTax = federalTax + provincialTax;
