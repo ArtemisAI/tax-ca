@@ -1,0 +1,196 @@
+{
+  "persona": {
+    "name": "Sarah & Mike Johnson",
+    "description": "Mid-Career Family with Two Children",
+    "demographics": {
+      "primaryAge": 34,
+      "spouseAge": 36,
+      "maritalStatus": "married",
+      "location": "Calgary, AB",
+      "occupation": "Marketing Manager & Accountant",
+      "children": 2,
+      "childrenAges": [6, 9]
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "234567890",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "dateOfBirth": "1990-07-22",
+      "province": "AB",
+      "postalCode": "T2P 1J9",
+      "maritalStatus": "married"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "spouse": {
+    "personalInfo": {
+      "sin": "345678901",
+      "firstName": "Mike",
+      "lastName": "Johnson",
+      "dateOfBirth": "1988-11-10",
+      "province": "AB",
+      "maritalStatus": "married"
+    }
+  },
+  "income": {
+    "employment": [
+      {
+        "employerName": "AdCorp Marketing",
+        "grossIncome": 75000,
+        "incomeTaxDeducted": 11250,
+        "cppContributions": 3754.45,
+        "eiContributions": 1357.50,
+        "pensionAdjustment": 3750
+      }
+    ],
+    "spouseIncome": {
+      "employment": [
+        {
+          "employerName": "Numbers & Co",
+          "grossIncome": 52000,
+          "incomeTaxDeducted": 6240,
+          "cppContributions": 3754.45,
+          "eiContributions": 941.60,
+          "pensionAdjustment": 2600
+        }
+      ]
+    },
+    "investment": {
+      "interestIncome": 320,
+      "dividendIncome": 800,
+      "eligibleDividends": 800,
+      "capitalGains": 1200,
+      "capitalLosses": 0
+    },
+    "other": {
+      "ei": 0
+    }
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 8500,
+      "availableRoom": 13500,
+      "carriedForwardRoom": 2200
+    },
+    "childcare": {
+      "expenses": 12000,
+      "children": [
+        {
+          "age": 6,
+          "disability": false
+        },
+        {
+          "age": 9,
+          "disability": false
+        }
+      ]
+    },
+    "medical": {
+      "totalExpenses": 2400,
+      "premiums": 960
+    },
+    "charitable": {
+      "donations": 1200,
+      "carriedForward": 0
+    },
+    "employment": {
+      "unionDues": 480,
+      "homeOffice": 0,
+      "travelExpenses": 800
+    },
+    "interest": {
+      "studentLoans": 0,
+      "investmentLoans": 150
+    },
+    "other": {}
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 67820,
+      "taxOwing": 12673,
+      "nonRefundableCredits": 3890,
+      "netTax": 8783,
+      "refundableCredits": 3600,
+      "finalTax": 5183
+    },
+    "provincial": {
+      "province": "AB",
+      "taxableIncome": 67820,
+      "taxOwing": 6782,
+      "nonRefundableCredits": 2034,
+      "netTax": 4748,
+      "refundableCredits": 800,
+      "finalTax": 3948
+    },
+    "combined": {
+      "totalTaxOwing": 19455,
+      "totalCredits": 6524,
+      "netTaxOwing": 9131,
+      "marginalRate": 0.3047,
+      "averageRate": 0.1347
+    },
+    "childBenefits": {
+      "canadaChildBenefit": 7200,
+      "albertaChildBenefit": 0
+    },
+    "balanceOwing": -8359,
+    "refundExpected": true
+  },
+  "testScenarios": [
+    {
+      "name": "Family Tax Optimization",
+      "description": "Test family tax benefits and optimization strategies",
+      "assertions": [
+        "Childcare expenses should be deductible by lower-income spouse",
+        "Canada Child Benefit should be calculated correctly",
+        "Spousal amount should be available if applicable"
+      ]
+    },
+    {
+      "name": "Childcare Expense Deduction",
+      "description": "Test childcare expense calculations and limits",
+      "assertions": [
+        "Childcare expenses should be limited by income and per-child limits",
+        "Deduction should be claimed by lower-income spouse",
+        "Age-based limits should be applied correctly"
+      ]
+    },
+    {
+      "name": "Investment Income Taxation",
+      "description": "Test taxation of various investment income types",
+      "assertions": [
+        "Dividend gross-up should be calculated correctly",
+        "Dividend tax credit should reduce tax owing",
+        "Capital gains should be taxed at 50% inclusion rate"
+      ]
+    },
+    {
+      "name": "Alberta Tax Calculation",
+      "description": "Test Alberta provincial tax calculations",
+      "assertions": [
+        "Alberta flat tax rate should be applied correctly",
+        "No provincial sales tax credit",
+        "Alberta family employment tax credit if applicable"
+      ]
+    },
+    {
+      "name": "Dual Income Family Benefits",
+      "description": "Test family benefits for dual-income households",
+      "assertions": [
+        "Family net income should determine benefit amounts",
+        "Benefits should phase out appropriately with income",
+        "Both spouses should contribute to family income calculation"
+      ]
+    }
+  ],
+  "notes": [
+    "Typical dual-income family scenario with common family expenses",
+    "Tests childcare deductions and family benefits",
+    "Should benefit from progressive tax system and family credits",
+    "Investment income adds complexity to tax calculation",
+    "Alberta's flat provincial tax rate simplifies provincial calculations"
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "credits-schema.json",
+  "title": "Canadian Tax Credits",
+  "description": "Schema for tax credits available to Canadian taxpayers",
+  "type": "object",
+  "properties": {
+    "nonRefundable": {
+      "type": "object",
+      "description": "Non-refundable tax credits",
+      "properties": {
+        "basicPersonal": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Basic personal amount"
+        },
+        "spousal": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Spousal amount"
+        },
+        "age": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Age amount (65 or older)"
+        },
+        "pensionIncome": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Pension income amount"
+        },
+        "caregiver": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Caregiver amount"
+        },
+        "disability": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Disability amount"
+        },
+        "tuition": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Tuition fees"
+        },
+        "medical": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Medical expenses credit"
+        },
+        "charitable": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Charitable donations credit"
+        },
+        "dividendTaxCredit": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Dividend tax credit"
+        }
+      },
+      "additionalProperties": false
+    },
+    "refundable": {
+      "type": "object",
+      "description": "Refundable tax credits",
+      "properties": {
+        "gst": {
+          "type": "number",
+          "minimum": 0,
+          "description": "GST/HST credit"
+        },
+        "workingIncomeTaxBenefit": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Working Income Tax Benefit"
+        },
+        "childBenefits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Canada Child Benefit"
+        },
+        "climateBenefit": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Climate Action Benefit"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provincial": {
+      "type": "object",
+      "description": "Provincial tax credits (varies by province)",
+      "properties": {
+        "basicPersonal": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Provincial basic personal amount"
+        },
+        "lowIncome": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Provincial low-income credit"
+        },
+        "sales": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Provincial sales tax credit"
+        },
+        "property": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Property tax credit"
+        },
+        "other": {
+          "type": "array",
+          "description": "Other province-specific credits",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the credit"
+              },
+              "amount": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Credit amount"
+              }
+            },
+            "required": ["name", "amount"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

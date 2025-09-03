@@ -1,0 +1,205 @@
+{
+  "scenario": "Simple Employment Income",
+  "description": "Basic employment income with standard deductions for middle-income earner",
+  "applicability": "Most common scenario for full-time employees",
+  "taxYear": 2024,
+  "testCase": {
+    "taxpayer": {
+      "personalInfo": {
+        "sin": "999999999",
+        "firstName": "Test",
+        "lastName": "Employee",
+        "dateOfBirth": "1985-06-15",
+        "province": "ON",
+        "postalCode": "K1A 0A6",
+        "maritalStatus": "single"
+      },
+      "taxYear": 2024,
+      "filingStatus": "individual"
+    },
+    "income": {
+      "employment": [
+        {
+          "employerName": "Generic Corp",
+          "grossIncome": 65000,
+          "incomeTaxDeducted": 9750,
+          "cppContributions": 3754.45,
+          "eiContributions": 1176.50,
+          "pensionAdjustment": 3250
+        }
+      ],
+      "pension": {},
+      "investment": {
+        "interestIncome": 500
+      },
+      "other": {}
+    },
+    "deductions": {
+      "rrsp": {
+        "contributions": 6500,
+        "availableRoom": 11700,
+        "carriedForwardRoom": 0
+      },
+      "medical": {
+        "totalExpenses": 1200,
+        "premiums": 480
+      },
+      "charitable": {
+        "donations": 750
+      },
+      "employment": {
+        "unionDues": 360
+      },
+      "interest": {
+        "studentLoans": 800
+      }
+    }
+  },
+  "expectedRanges": {
+    "totalIncome": {
+      "min": 65400,
+      "max": 65600,
+      "description": "Employment + interest income"
+    },
+    "totalDeductions": {
+      "min": 6500,
+      "max": 6500,
+      "description": "RRSP contribution only for net income calculation"
+    },
+    "taxableIncome": {
+      "min": 58900,
+      "max": 59000,
+      "description": "After RRSP deduction"
+    },
+    "federalTax": {
+      "min": 8800,
+      "max": 9200,
+      "description": "Federal tax after basic personal amount"
+    },
+    "provincialTax": {
+      "min": 2900,
+      "max": 3100,
+      "description": "Ontario provincial tax"
+    },
+    "totalTax": {
+      "min": 11700,
+      "max": 12300,
+      "description": "Combined federal and provincial"
+    },
+    "refund": {
+      "min": -3000,
+      "max": -1500,
+      "description": "Expected refund due to over-withholding"
+    }
+  },
+  "testAssertions": [
+    {
+      "category": "Income Calculation",
+      "tests": [
+        "Total income should equal employment income plus interest income",
+        "Employment income should be fully taxable",
+        "Interest income should be fully taxable"
+      ]
+    },
+    {
+      "category": "Deduction Validation",
+      "tests": [
+        "RRSP contribution should reduce net income",
+        "RRSP contribution should not exceed available room",
+        "Union dues should be deductible from employment income",
+        "Student loan interest should provide tax credit"
+      ]
+    },
+    {
+      "category": "Tax Calculation",
+      "tests": [
+        "Federal tax should be calculated using correct brackets",
+        "Ontario provincial tax should use correct rates",
+        "Basic personal amounts should be applied correctly",
+        "Marginal tax rate should be approximately 29.65%"
+      ]
+    },
+    {
+      "category": "Credit Application",
+      "tests": [
+        "Basic personal amount credit should apply",
+        "Student loan interest credit should apply",
+        "Medical expense credit should apply if above threshold",
+        "Charitable donation credit should apply"
+      ]
+    },
+    {
+      "category": "CPP/EI Contributions",
+      "tests": [
+        "CPP contribution should be at maximum for this income level",
+        "EI contribution should be correct for employment income",
+        "No additional CPP/EI should be owing"
+      ]
+    },
+    {
+      "category": "Final Balance",
+      "tests": [
+        "Tax withholding should result in refund",
+        "Refund amount should be reasonable",
+        "All calculations should balance mathematically"
+      ]
+    }
+  ],
+  "variations": [
+    {
+      "name": "Higher Income",
+      "changes": {
+        "income.employment[0].grossIncome": 85000,
+        "income.employment[0].incomeTaxDeducted": 14500,
+        "deductions.rrsp.contributions": 8500
+      },
+      "expectedChanges": {
+        "marginalRate": "Higher due to next tax bracket",
+        "refund": "Smaller refund or balance owing"
+      }
+    },
+    {
+      "name": "No RRSP Contribution",
+      "changes": {
+        "deductions.rrsp.contributions": 0
+      },
+      "expectedChanges": {
+        "taxableIncome": "Higher by $6,500",
+        "totalTax": "Higher by approximately $1,900"
+      }
+    },
+    {
+      "name": "Quebec Resident",
+      "changes": {
+        "taxpayer.personalInfo.province": "QC",
+        "taxpayer.personalInfo.postalCode": "H1A 0A1"
+      },
+      "expectedChanges": {
+        "federalTax": "Lower due to Quebec abatement",
+        "provincialTax": "Higher due to Quebec provincial rates",
+        "totalTax": "Generally higher overall"
+      }
+    }
+  ],
+  "performanceTargets": {
+    "calculationTime": {
+      "target": "< 25ms",
+      "description": "Simple scenario should calculate very quickly"
+    },
+    "memoryUsage": {
+      "target": "< 1MB",
+      "description": "Minimal memory overhead for basic calculation"
+    },
+    "accuracy": {
+      "target": "±$1",
+      "description": "Should match manual calculation within $1"
+    }
+  },
+  "notes": [
+    "This scenario represents the most common tax situation for Canadian employees",
+    "Tests basic tax calculation without complex deductions or income sources",
+    "Should serve as baseline for performance and accuracy testing",
+    "Variations test sensitivity to common parameter changes",
+    "Expected refund due to conservative tax withholding assumptions"
+  ]
+}

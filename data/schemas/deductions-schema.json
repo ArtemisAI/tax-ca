@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "deductions-schema.json",
+  "title": "Canadian Tax Deductions",
+  "description": "Schema for tax deductions available to Canadian taxpayers",
+  "type": "object",
+  "properties": {
+    "rrsp": {
+      "type": "object",
+      "description": "Registered Retirement Savings Plan contributions",
+      "properties": {
+        "contributions": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "RRSP contributions for the tax year"
+        },
+        "availableRoom": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Available RRSP contribution room"
+        },
+        "carriedForwardRoom": {
+          "type": "number",
+          "minimum": 0,
+          "description": "RRSP room carried forward from previous years"
+        }
+      },
+      "additionalProperties": false
+    },
+    "childcare": {
+      "type": "object",
+      "description": "Childcare expenses",
+      "properties": {
+        "expenses": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50000,
+          "description": "Total childcare expenses"
+        },
+        "children": {
+          "type": "array",
+          "description": "Information about children for childcare expenses",
+          "items": {
+            "type": "object",
+            "properties": {
+              "age": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18
+              },
+              "disability": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "required": ["age"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "medical": {
+      "type": "object",
+      "description": "Medical expenses",
+      "properties": {
+        "totalExpenses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total medical expenses"
+        },
+        "premiums": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Medical insurance premiums"
+        }
+      },
+      "additionalProperties": false
+    },
+    "charitable": {
+      "type": "object",
+      "description": "Charitable donations",
+      "properties": {
+        "donations": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total charitable donations"
+        },
+        "carriedForward": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Charitable donations carried forward"
+        }
+      },
+      "additionalProperties": false
+    },
+    "employment": {
+      "type": "object",
+      "description": "Employment-related deductions",
+      "properties": {
+        "unionDues": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Union or professional dues"
+        },
+        "homeOffice": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Home office expenses"
+        },
+        "travelExpenses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Employment travel expenses"
+        }
+      },
+      "additionalProperties": false
+    },
+    "interest": {
+      "type": "object",
+      "description": "Interest expenses",
+      "properties": {
+        "studentLoans": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Student loan interest"
+        },
+        "investmentLoans": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Investment loan interest"
+        }
+      },
+      "additionalProperties": false
+    },
+    "other": {
+      "type": "object",
+      "description": "Other deductions",
+      "properties": {
+        "movingExpenses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Moving expenses"
+        },
+        "attendantCare": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Attendant care expenses"
+        },
+        "disabilitySupports": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Disability support deductions"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

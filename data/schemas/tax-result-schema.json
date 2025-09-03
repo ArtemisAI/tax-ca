@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "tax-result-schema.json",
+  "title": "Canadian Tax Calculation Result",
+  "description": "Schema for the complete tax calculation result",
+  "type": "object",
+  "properties": {
+    "federal": {
+      "type": "object",
+      "description": "Federal tax calculations",
+      "properties": {
+        "taxableIncome": {
+          "type": "number",
+          "description": "Federal taxable income"
+        },
+        "taxOwing": {
+          "type": "number",
+          "description": "Federal tax owing before credits"
+        },
+        "nonRefundableCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total non-refundable credits"
+        },
+        "netTax": {
+          "type": "number",
+          "description": "Net federal tax after non-refundable credits"
+        },
+        "refundableCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total refundable credits"
+        },
+        "finalTax": {
+          "type": "number",
+          "description": "Final federal tax (can be negative for refund)"
+        },
+        "marginalRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Federal marginal tax rate"
+        },
+        "averageRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Federal average tax rate"
+        }
+      },
+      "required": ["taxableIncome", "taxOwing", "nonRefundableCredits", "netTax", "refundableCredits", "finalTax"],
+      "additionalProperties": false
+    },
+    "provincial": {
+      "type": "object",
+      "description": "Provincial tax calculations",
+      "properties": {
+        "province": {
+          "type": "string",
+          "enum": ["ON", "QC", "BC", "AB", "MB", "SK", "NS", "NB", "PE", "NL", "YT", "NT", "NU"],
+          "description": "Province or territory"
+        },
+        "taxableIncome": {
+          "type": "number",
+          "description": "Provincial taxable income"
+        },
+        "taxOwing": {
+          "type": "number",
+          "description": "Provincial tax owing before credits"
+        },
+        "nonRefundableCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total provincial non-refundable credits"
+        },
+        "netTax": {
+          "type": "number",
+          "description": "Net provincial tax after non-refundable credits"
+        },
+        "refundableCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total provincial refundable credits"
+        },
+        "finalTax": {
+          "type": "number",
+          "description": "Final provincial tax (can be negative for refund)"
+        },
+        "marginalRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Provincial marginal tax rate"
+        },
+        "averageRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Provincial average tax rate"
+        }
+      },
+      "required": ["province", "taxableIncome", "taxOwing", "nonRefundableCredits", "netTax", "refundableCredits", "finalTax"],
+      "additionalProperties": false
+    },
+    "combined": {
+      "type": "object",
+      "description": "Combined federal and provincial calculations",
+      "properties": {
+        "totalTaxOwing": {
+          "type": "number",
+          "description": "Total tax owing (federal + provincial)"
+        },
+        "totalCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total credits (federal + provincial)"
+        },
+        "netTaxOwing": {
+          "type": "number",
+          "description": "Net total tax owing after all credits"
+        },
+        "refundAmount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Refund amount if applicable"
+        },
+        "marginalRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Combined marginal tax rate"
+        },
+        "averageRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Combined average tax rate"
+        }
+      },
+      "required": ["totalTaxOwing", "totalCredits", "netTaxOwing", "marginalRate", "averageRate"],
+      "additionalProperties": false
+    },
+    "cpp": {
+      "type": "object",
+      "description": "Canada Pension Plan calculations",
+      "properties": {
+        "contributionRequired": {
+          "type": "number",
+          "minimum": 0,
+          "description": "CPP contribution required"
+        },
+        "contributionPaid": {
+          "type": "number",
+          "minimum": 0,
+          "description": "CPP contribution already paid"
+        },
+        "additionalContribution": {
+          "type": "number",
+          "description": "Additional CPP contribution required (can be negative)"
+        },
+        "maxContribution": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum CPP contribution for the year"
+        }
+      },
+      "required": ["contributionRequired", "contributionPaid", "additionalContribution", "maxContribution"],
+      "additionalProperties": false
+    },
+    "ei": {
+      "type": "object",
+      "description": "Employment Insurance calculations",
+      "properties": {
+        "contributionRequired": {
+          "type": "number",
+          "minimum": 0,
+          "description": "EI contribution required"
+        },
+        "contributionPaid": {
+          "type": "number",
+          "minimum": 0,
+          "description": "EI contribution already paid"
+        },
+        "additionalContribution": {
+          "type": "number",
+          "description": "Additional EI contribution required (can be negative)"
+        },
+        "maxContribution": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum EI contribution for the year"
+        }
+      },
+      "required": ["contributionRequired", "contributionPaid", "additionalContribution", "maxContribution"],
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "description": "Tax calculation summary",
+      "properties": {
+        "totalIncome": {
+          "type": "number",
+          "description": "Total income from all sources"
+        },
+        "totalDeductions": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total deductions"
+        },
+        "taxableIncome": {
+          "type": "number",
+          "description": "Total taxable income"
+        },
+        "totalTaxCredits": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total tax credits and withholdings"
+        },
+        "balanceOwing": {
+          "type": "number",
+          "description": "Final balance owing or refund (negative)"
+        },
+        "effectiveRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Effective tax rate on total income"
+        }
+      },
+      "required": ["totalIncome", "totalDeductions", "taxableIncome", "totalTaxCredits", "balanceOwing", "effectiveRate"],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Calculation metadata",
+      "properties": {
+        "calculationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the calculation was performed"
+        },
+        "taxYear": {
+          "type": "integer",
+          "minimum": 2020,
+          "maximum": 2024,
+          "description": "Tax year for the calculation"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the tax calculation engine"
+        },
+        "processingTime": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Processing time in milliseconds"
+        }
+      },
+      "required": ["calculationDate", "taxYear", "version"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["federal", "provincial", "combined", "cpp", "ei", "summary", "metadata"],
+  "additionalProperties": false
+}

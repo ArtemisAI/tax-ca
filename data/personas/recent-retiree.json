@@ -1,0 +1,157 @@
+{
+  "persona": {
+    "name": "Linda Thompson",
+    "description": "Recent Retiree with Pension Income",
+    "demographics": {
+      "age": 65,
+      "maritalStatus": "widowed",
+      "location": "Halifax, NS",
+      "occupation": "Retired Teacher",
+      "children": 2,
+      "childrenAges": [35, 38]
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "567890123",
+      "firstName": "Linda",
+      "lastName": "Thompson",
+      "dateOfBirth": "1959-09-12",
+      "province": "NS",
+      "postalCode": "B3H 2Y1",
+      "maritalStatus": "widowed"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "income": {
+    "employment": [],
+    "pension": {
+      "cpp": 8500,
+      "oas": 7200,
+      "employerPension": 42000
+    },
+    "investment": {
+      "interestIncome": 1200,
+      "dividendIncome": 2400,
+      "eligibleDividends": 2400,
+      "capitalGains": 0,
+      "capitalLosses": 0
+    },
+    "other": {}
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 0,
+      "availableRoom": 0,
+      "carriedForwardRoom": 0
+    },
+    "medical": {
+      "totalExpenses": 3800,
+      "premiums": 1200
+    },
+    "charitable": {
+      "donations": 2400,
+      "carriedForward": 0
+    },
+    "employment": {},
+    "interest": {
+      "studentLoans": 0,
+      "investmentLoans": 0
+    },
+    "other": {}
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 46000,
+      "taxOwing": 6900,
+      "nonRefundableCredits": 4650,
+      "netTax": 2250,
+      "refundableCredits": 0,
+      "finalTax": 2250
+    },
+    "provincial": {
+      "province": "NS",
+      "taxableIncome": 46000,
+      "taxOwing": 3864,
+      "nonRefundableCredits": 1535,
+      "netTax": 2329,
+      "refundableCredits": 200,
+      "finalTax": 2129
+    },
+    "combined": {
+      "totalTaxOwing": 10764,
+      "totalCredits": 6185,
+      "netTaxOwing": 4379,
+      "marginalRate": 0.3229,
+      "averageRate": 0.0952
+    },
+    "balanceOwing": 4379,
+    "refundExpected": false
+  },
+  "testScenarios": [
+    {
+      "name": "Senior Tax Credits",
+      "description": "Test age-related tax credits and benefits",
+      "assertions": [
+        "Age amount credit should apply (over 65)",
+        "Pension income amount should apply",
+        "Enhanced basic personal amount if applicable"
+      ]
+    },
+    {
+      "name": "Pension Income Taxation",
+      "description": "Test taxation of various pension income sources",
+      "assertions": [
+        "CPP should be fully taxable",
+        "OAS should be fully taxable",
+        "Employer pension should qualify for pension income amount",
+        "No OAS clawback at this income level"
+      ]
+    },
+    {
+      "name": "Pension Income Splitting",
+      "description": "Test pension income splitting opportunities",
+      "assertions": [
+        "Employer pension income should be eligible for splitting",
+        "CPP and OAS not eligible for splitting",
+        "Splitting could provide tax savings if spouse has lower income"
+      ]
+    },
+    {
+      "name": "Medical Expense Credit",
+      "description": "Test medical expense credit for seniors",
+      "assertions": [
+        "Medical expense threshold should be lower for seniors",
+        "Credit should apply to qualifying medical expenses",
+        "Medical insurance premiums should qualify"
+      ]
+    },
+    {
+      "name": "Nova Scotia Provincial Features",
+      "description": "Test Nova Scotia specific tax features",
+      "assertions": [
+        "NS basic personal amount should apply",
+        "NS senior citizen property tax credit if applicable",
+        "NS low-income tax reduction if applicable"
+      ]
+    },
+    {
+      "name": "Retirement Income Optimization",
+      "description": "Test optimal retirement income strategies",
+      "assertions": [
+        "No RRSP contribution room as retiree",
+        "TFSA contributions should still be available",
+        "Tax-efficient withdrawal strategies should be considered"
+      ]
+    }
+  ],
+  "notes": [
+    "Typical recent retiree scenario with multiple pension sources",
+    "Tests senior-specific tax credits and benefits",
+    "Pension income splitting opportunities available",
+    "Medical expenses more significant in retirement",
+    "Nova Scotia provincial tax features for seniors",
+    "No RRSP room but TFSA still available for tax-free growth"
+  ]
+}

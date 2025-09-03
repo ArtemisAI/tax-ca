@@ -1,0 +1,169 @@
+{
+  "persona": {
+    "name": "Robert Martinez",
+    "description": "Senior Executive with Complex Financial Situation",
+    "demographics": {
+      "age": 52,
+      "maritalStatus": "married",
+      "location": "Vancouver, BC",
+      "occupation": "Chief Technology Officer",
+      "children": 2,
+      "childrenAges": [18, 21]
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "456789012",
+      "firstName": "Robert",
+      "lastName": "Martinez",
+      "dateOfBirth": "1972-05-18",
+      "province": "BC",
+      "postalCode": "V6B 2W9",
+      "maritalStatus": "married"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "income": {
+    "employment": [
+      {
+        "employerName": "TechGlobal Corp",
+        "grossIncome": 145000,
+        "incomeTaxDeducted": 32200,
+        "cppContributions": 3754.45,
+        "eiContributions": 1357.50,
+        "pensionAdjustment": 14500
+      }
+    ],
+    "investment": {
+      "interestIncome": 2800,
+      "dividendIncome": 8500,
+      "eligibleDividends": 8500,
+      "capitalGains": 15000,
+      "capitalLosses": 3000
+    },
+    "other": {
+      "businessIncome": 25000
+    }
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 15000,
+      "availableRoom": 26100,
+      "carriedForwardRoom": 8500
+    },
+    "medical": {
+      "totalExpenses": 4200,
+      "premiums": 1800
+    },
+    "charitable": {
+      "donations": 5000,
+      "carriedForward": 2000
+    },
+    "employment": {
+      "unionDues": 0,
+      "homeOffice": 1200,
+      "travelExpenses": 2400
+    },
+    "interest": {
+      "studentLoans": 0,
+      "investmentLoans": 3200
+    },
+    "other": {
+      "attendantCare": 8000
+    }
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 182500,
+      "taxOwing": 42075,
+      "nonRefundableCredits": 4800,
+      "netTax": 37275,
+      "refundableCredits": 0,
+      "finalTax": 37275
+    },
+    "provincial": {
+      "province": "BC",
+      "taxableIncome": 182500,
+      "taxOwing": 17587,
+      "nonRefundableCredits": 2100,
+      "netTax": 15487,
+      "refundableCredits": 400,
+      "finalTax": 15087
+    },
+    "combined": {
+      "totalTaxOwing": 59662,
+      "totalCredits": 6900,
+      "netTaxOwing": 52362,
+      "marginalRate": 0.4307,
+      "averageRate": 0.2868
+    },
+    "balanceOwing": 20162,
+    "refundExpected": false
+  },
+  "testScenarios": [
+    {
+      "name": "High Income Tax Brackets",
+      "description": "Test high-income tax bracket calculations",
+      "assertions": [
+        "Should be in top federal tax brackets",
+        "BC high-income surtax should apply",
+        "Marginal rate should exceed 40%"
+      ]
+    },
+    {
+      "name": "Complex Investment Income",
+      "description": "Test various investment income types and taxation",
+      "assertions": [
+        "Dividend gross-up should apply to eligible dividends",
+        "Dividend tax credit should reduce federal tax",
+        "Capital gains should be 50% taxable",
+        "Capital losses should offset gains"
+      ]
+    },
+    {
+      "name": "Business Income Integration",
+      "description": "Test integration of business income with employment income",
+      "assertions": [
+        "Business income should be fully taxable",
+        "Should be able to deduct business expenses",
+        "CPP contributions on business income should be calculated"
+      ]
+    },
+    {
+      "name": "RRSP Optimization",
+      "description": "Test RRSP contribution optimization for high-income earners",
+      "assertions": [
+        "Maximum RRSP room should be calculated correctly",
+        "High marginal rate should make RRSP contributions very valuable",
+        "Pension adjustment should reduce RRSP room"
+      ]
+    },
+    {
+      "name": "BC Provincial Features",
+      "description": "Test British Columbia specific tax features",
+      "assertions": [
+        "BC basic personal amount should apply",
+        "BC climate action tax credit should be calculated",
+        "BC medical services premium should be considered if applicable"
+      ]
+    },
+    {
+      "name": "Medical Expense Credit",
+      "description": "Test medical expense credit calculation for high-income taxpayer",
+      "assertions": [
+        "Medical expense threshold should be 3% of net income",
+        "Only expenses above threshold should qualify for credit",
+        "Credit should be calculated at lowest tax rate"
+      ]
+    }
+  ],
+  "notes": [
+    "High-income executive scenario with complex investment portfolio",
+    "Tests top tax brackets and high marginal rates",
+    "Includes business income and investment income complexity",
+    "RRSP contribution provides significant tax savings",
+    "BC provincial tax features including climate credits",
+    "Medical expenses significant due to high income threshold"
+  ]
+}

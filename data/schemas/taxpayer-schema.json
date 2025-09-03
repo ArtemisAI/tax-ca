@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "taxpayer-schema.json",
+  "title": "Canadian Taxpayer",
+  "description": "Schema for Canadian taxpayer personal information and basic data",
+  "type": "object",
+  "properties": {
+    "personalInfo": {
+      "type": "object",
+      "properties": {
+        "sin": {
+          "type": "string",
+          "pattern": "^[0-9]{9}$",
+          "description": "Social Insurance Number (9 digits)"
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "First name of the taxpayer"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "Last name of the taxpayer"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of birth in YYYY-MM-DD format"
+        },
+        "province": {
+          "type": "string",
+          "enum": ["ON", "QC", "BC", "AB", "MB", "SK", "NS", "NB", "PE", "NL", "YT", "NT", "NU"],
+          "description": "Province or territory of residence"
+        },
+        "postalCode": {
+          "type": "string",
+          "pattern": "^[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$",
+          "description": "Canadian postal code in A1A 1A1 format"
+        },
+        "maritalStatus": {
+          "type": "string",
+          "enum": ["single", "married", "common-law", "divorced", "widowed", "separated"],
+          "description": "Marital status for tax purposes"
+        }
+      },
+      "required": ["sin", "firstName", "lastName", "dateOfBirth", "province", "maritalStatus"]
+    },
+    "taxYear": {
+      "type": "integer",
+      "minimum": 2020,
+      "maximum": 2024,
+      "description": "Tax year for calculations"
+    },
+    "filingStatus": {
+      "type": "string",
+      "enum": ["individual", "joint", "deceased"],
+      "default": "individual",
+      "description": "Tax filing status"
+    }
+  },
+  "required": ["personalInfo", "taxYear"],
+  "additionalProperties": false
+}
