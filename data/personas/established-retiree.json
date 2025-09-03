@@ -1,0 +1,206 @@
+{
+  "persona": {
+    "name": "Frank & Marie Dubois",
+    "description": "Established Retiree Couple in Quebec with Multiple Income Sources",
+    "demographics": {
+      "primaryAge": 72,
+      "spouseAge": 69,
+      "maritalStatus": "married",
+      "location": "Montreal, QC",
+      "occupation": "Retired (Former Engineer & Teacher)",
+      "children": 3,
+      "childrenAges": [42, 45, 48]
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "678901234",
+      "firstName": "Frank",
+      "lastName": "Dubois",
+      "dateOfBirth": "1952-02-28",
+      "province": "QC",
+      "postalCode": "H3H 1P1",
+      "maritalStatus": "married"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "spouse": {
+    "personalInfo": {
+      "sin": "789012345",
+      "firstName": "Marie",
+      "lastName": "Dubois",
+      "dateOfBirth": "1955-08-14",
+      "province": "QC",
+      "maritalStatus": "married"
+    }
+  },
+  "income": {
+    "employment": [],
+    "pension": {
+      "cpp": 15200,
+      "oas": 7200,
+      "employerPension": 42000,
+      "rrif": 18000
+    },
+    "investment": {
+      "interestIncome": 3200,
+      "dividendIncome": 4800,
+      "eligibleDividends": 4800,
+      "capitalGains": 2000,
+      "capitalLosses": 0
+    },
+    "other": {
+      "rentalIncome": 8400
+    }
+  },
+  "spouseIncome": {
+    "pension": {
+      "cpp": 9800,
+      "oas": 7200,
+      "employerPension": 28000
+    },
+    "investment": {
+      "interestIncome": 1800,
+      "dividendIncome": 2400,
+      "eligibleDividends": 2400
+    }
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 0,
+      "availableRoom": 0,
+      "carriedForwardRoom": 0
+    },
+    "medical": {
+      "totalExpenses": 8400,
+      "premiums": 2400
+    },
+    "charitable": {
+      "donations": 4800,
+      "carriedForward": 1200
+    },
+    "employment": {},
+    "interest": {
+      "studentLoans": 0,
+      "investmentLoans": 800
+    },
+    "other": {
+      "attendantCare": 2400
+    }
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 78600,
+      "taxOwing": 14790,
+      "nonRefundableCredits": 6200,
+      "netTax": 8590,
+      "refundableCredits": 0,
+      "finalTax": 8590
+    },
+    "provincial": {
+      "province": "QC",
+      "taxableIncome": 78600,
+      "taxOwing": 16830,
+      "nonRefundableCredits": 4200,
+      "netTax": 12630,
+      "refundableCredits": 600,
+      "finalTax": 12030
+    },
+    "combined": {
+      "totalTaxOwing": 31620,
+      "totalCredits": 10400,
+      "netTaxOwing": 20620,
+      "marginalRate": 0.3798,
+      "averageRate": 0.2622
+    },
+    "oasClawback": {
+      "amount": 2150,
+      "description": "Partial OAS clawback due to high income"
+    },
+    "balanceOwing": 20620,
+    "refundExpected": false
+  },
+  "testScenarios": [
+    {
+      "name": "Quebec Tax System",
+      "description": "Test Quebec's unique tax system with abatement",
+      "assertions": [
+        "Federal abatement should be applied (16.5% reduction)",
+        "Quebec provincial tax rates should be higher than other provinces",
+        "Quebec basic personal amount should be higher",
+        "Quebec medical expense credit should apply"
+      ]
+    },
+    {
+      "name": "OAS Clawback Calculation",
+      "description": "Test Old Age Security clawback for high-income seniors",
+      "assertions": [
+        "OAS clawback should begin at income threshold (~$86,912)",
+        "Clawback rate should be 15% of excess income",
+        "Net OAS should be reduced by clawback amount",
+        "Clawback should not exceed total OAS benefit"
+      ]
+    },
+    {
+      "name": "Pension Income Splitting",
+      "description": "Test pension income splitting opportunities",
+      "assertions": [
+        "Employer pension income should be eligible for splitting",
+        "Up to 50% can be allocated to lower-income spouse",
+        "RRIF income should be eligible for splitting",
+        "CPP and OAS not eligible for splitting"
+      ]
+    },
+    {
+      "name": "Senior Tax Credits",
+      "description": "Test age-related credits and benefits",
+      "assertions": [
+        "Age amount should be available for both spouses",
+        "Pension income amount should apply to eligible pension income",
+        "Medical expense credit threshold should be lower for seniors",
+        "Caregiver amount should apply if spouse needs care"
+      ]
+    },
+    {
+      "name": "Complex Investment Income",
+      "description": "Test taxation of investment income in retirement",
+      "assertions": [
+        "Dividend gross-up should apply to eligible dividends",
+        "Dividend tax credit should reduce tax significantly",
+        "Capital gains should be 50% taxable",
+        "Interest income should be fully taxable"
+      ]
+    },
+    {
+      "name": "Rental Income Integration",
+      "description": "Test rental income taxation and expenses",
+      "assertions": [
+        "Rental income should be fully taxable",
+        "Rental expenses should be deductible",
+        "Depreciation on rental property should be considered",
+        "Net rental income should integrate with other income"
+      ]
+    },
+    {
+      "name": "Medical Expense Credits",
+      "description": "Test medical expense credit for seniors with high expenses",
+      "assertions": [
+        "Medical expense threshold should be 3% of net income or $2,479",
+        "Expenses above threshold should qualify for 15% credit",
+        "Medical insurance premiums should qualify",
+        "Attendant care expenses should qualify"
+      ]
+    }
+  ],
+  "notes": [
+    "Established retiree couple in Quebec with complex income sources",
+    "Tests Quebec's unique tax system including federal abatement",
+    "OAS clawback applies due to higher retirement income",
+    "Pension income splitting opportunities for tax optimization",
+    "Multiple investment income types create complex tax calculations",
+    "Rental income adds additional complexity",
+    "High medical expenses common in older age create significant credits",
+    "Charitable donations can be optimized between spouses"
+  ]
+}

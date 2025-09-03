@@ -1,0 +1,198 @@
+{
+  "persona": {
+    "name": "Dorothy Williams",
+    "description": "Low-Income Senior with Government Benefits",
+    "demographics": {
+      "age": 78,
+      "maritalStatus": "single",
+      "location": "Winnipeg, MB",
+      "occupation": "Retired (Former Retail Worker)",
+      "children": 2,
+      "childrenAges": [52, 55]
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "890123456",
+      "firstName": "Dorothy",
+      "lastName": "Williams",
+      "dateOfBirth": "1946-11-03",
+      "province": "MB",
+      "postalCode": "R3C 0P8",
+      "maritalStatus": "single"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "income": {
+    "employment": [],
+    "pension": {
+      "cpp": 4200,
+      "oas": 7200,
+      "employerPension": 0,
+      "rrif": 0
+    },
+    "investment": {
+      "interestIncome": 85,
+      "dividendIncome": 0,
+      "capitalGains": 0,
+      "capitalLosses": 0
+    },
+    "other": {
+      "socialAssistance": 7100
+    }
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 0,
+      "availableRoom": 0,
+      "carriedForwardRoom": 0
+    },
+    "medical": {
+      "totalExpenses": 2800,
+      "premiums": 480
+    },
+    "charitable": {
+      "donations": 240,
+      "carriedForward": 0
+    },
+    "employment": {},
+    "interest": {
+      "studentLoans": 0,
+      "investmentLoans": 0
+    },
+    "other": {}
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 11485,
+      "taxOwing": 0,
+      "nonRefundableCredits": 2872,
+      "netTax": 0,
+      "refundableCredits": 1200,
+      "finalTax": -1200
+    },
+    "provincial": {
+      "province": "MB",
+      "taxableIncome": 11485,
+      "taxOwing": 0,
+      "nonRefundableCredits": 1120,
+      "netTax": 0,
+      "refundableCredits": 400,
+      "finalTax": -400
+    },
+    "combined": {
+      "totalTaxOwing": 0,
+      "totalCredits": 3992,
+      "netTaxOwing": -1600,
+      "marginalRate": 0.0,
+      "averageRate": 0.0
+    },
+    "benefits": {
+      "gstCredit": 720,
+      "climateBenefit": 336,
+      "manitobaLowIncomeCredit": 400
+    },
+    "balanceOwing": -3056,
+    "refundExpected": true
+  },
+  "testScenarios": [
+    {
+      "name": "Low-Income Tax Calculation",
+      "description": "Test tax calculation for income below basic personal amount",
+      "assertions": [
+        "No federal tax should be owing",
+        "No provincial tax should be owing",
+        "Basic personal amount should eliminate all tax",
+        "Age amount should provide additional credit"
+      ]
+    },
+    {
+      "name": "Guaranteed Income Supplement",
+      "description": "Test GIS eligibility and calculation",
+      "assertions": [
+        "Should be eligible for maximum GIS",
+        "GIS should not be taxable income",
+        "GIS should be based on previous year income",
+        "Should receive additional provincial supplements"
+      ]
+    },
+    {
+      "name": "Refundable Credits",
+      "description": "Test refundable credits for low-income seniors",
+      "assertions": [
+        "GST/HST credit should be at maximum amount",
+        "Climate action benefit should apply",
+        "Provincial low-income credits should apply",
+        "All credits should result in refund"
+      ]
+    },
+    {
+      "name": "Medical Expense Credit",
+      "description": "Test medical expense credit for low-income senior",
+      "assertions": [
+        "Medical expense threshold should be $2,479 or 3% of income",
+        "Most medical expenses should qualify for credit",
+        "Credit should be calculated at 15% rate",
+        "Credit should be refundable portion"
+      ]
+    },
+    {
+      "name": "Social Assistance Integration",
+      "description": "Test integration of social assistance with tax system",
+      "assertions": [
+        "Social assistance should not be taxable",
+        "Should not affect other benefit calculations",
+        "Should not create clawbacks",
+        "Should integrate properly with total income"
+      ]
+    },
+    {
+      "name": "Manitoba Provincial Features",
+      "description": "Test Manitoba specific tax features for low-income seniors",
+      "assertions": [
+        "Manitoba basic personal amount should apply",
+        "Manitoba low-income tax credit should apply",
+        "Manitoba senior citizen property tax credit should apply",
+        "No Manitoba provincial tax should be owing"
+      ]
+    },
+    {
+      "name": "Age-Related Benefits",
+      "description": "Test age-related benefits and credits",
+      "assertions": [
+        "Age amount should be available at maximum",
+        "Pension income amount should apply to CPP",
+        "No income-based clawbacks should apply",
+        "Enhanced medical expense credit should apply"
+      ]
+    }
+  ],
+  "specialConsiderations": {
+    "gisEligibility": {
+      "description": "Eligible for Guaranteed Income Supplement",
+      "amount": 11136,
+      "notes": "GIS is not taxable but affects benefit calculations"
+    },
+    "lowIncomeThresholds": {
+      "federalBasicPersonal": 15000,
+      "manitobaBasicPersonal": 10500,
+      "medicalExpenseThreshold": 2479
+    },
+    "benefitCalculations": {
+      "gstCredit": "Based on adjusted family net income",
+      "climateBenefit": "Federal and provincial components",
+      "provincialCredits": "Manitoba-specific low-income credits"
+    }
+  },
+  "notes": [
+    "Low-income senior scenario with minimal tax liability",
+    "Tests refundable credit system for low-income taxpayers",
+    "GIS provides significant additional income but is not taxable",
+    "Medical expenses create meaningful credits at low income levels",
+    "Manitoba provincial features for low-income seniors",
+    "Should result in significant refund from refundable credits",
+    "Tests integration of social assistance with tax system",
+    "No RRSP room or contribution capacity in retirement"
+  ]
+}
