@@ -47,10 +47,10 @@ describe('Performance Tests - Tax Calculations', () => {
                 const ympe = CPP.PENSIONABLE_EARNINGS.YMPE;
                 const basicExemption = CPP.PENSIONABLE_EARNINGS.BASIC_EXEMPTION;
                 const contributionRate = CPP.CONTRIBUTION_RATES.BASE;
-                
+
                 const pensionableEarnings = Math.min(
                     Math.max(75000 - basicExemption, 0),
-                    ympe - basicExemption
+                    ympe - basicExemption,
                 );
                 // Use the calculation to avoid unused variable warning
                 expect(pensionableEarnings * contributionRate).toBeGreaterThan(0);
@@ -74,9 +74,21 @@ describe('Performance Tests - Tax Calculations', () => {
 
             const startTime = performance.now();
 
-            scenarios.forEach(scenario => {
-                getFederalTaxAmount(scenario.province, scenario.income, inflationRate, yearsToInflate, scenario.credits);
-                getProvincialTaxAmount(scenario.province, scenario.income, inflationRate, yearsToInflate, scenario.credits);
+            scenarios.forEach((scenario) => {
+                getFederalTaxAmount(
+                    scenario.province,
+                    scenario.income,
+                    inflationRate,
+                    yearsToInflate,
+                    scenario.credits,
+                );
+                getProvincialTaxAmount(
+                    scenario.province,
+                    scenario.income,
+                    inflationRate,
+                    yearsToInflate,
+                    scenario.credits,
+                );
             });
 
             const endTime = performance.now();
@@ -89,13 +101,13 @@ describe('Performance Tests - Tax Calculations', () => {
         it('should handle varied income levels efficiently', () => {
             const incomes = [
                 25000, 35000, 45000, 55000, 65000, 75000, 85000, 95000,
-                105000, 125000, 150000, 200000, 300000, 500000, 1000000
+                105000, 125000, 150000, 200000, 300000, 500000, 1000000,
             ];
 
             const startTime = performance.now();
 
             // Test each income level 10 times
-            incomes.forEach(income => {
+            incomes.forEach((income) => {
                 for (let i = 0; i < 10; i++) {
                     getFederalTaxAmount('ON' as ProvinceCode, income, inflationRate, yearsToInflate, 1000);
                     getProvincialTaxAmount('ON' as ProvinceCode, income, inflationRate, yearsToInflate, 500);
@@ -118,12 +130,12 @@ describe('Performance Tests - Tax Calculations', () => {
             for (let i = 0; i < 10000; i++) {
                 const income = 50000 + (i % 100000);
                 getFederalTaxAmount('ON' as ProvinceCode, income, inflationRate, yearsToInflate, 1000);
-                
+
                 // Occasionally check memory hasn't grown excessively
                 if (i % 1000 === 0) {
                     const currentMemory = process.memoryUsage().heapUsed;
                     const memoryIncrease = currentMemory - initialMemory;
-                    
+
                     // Memory increase should be reasonable (less than 50MB)
                     expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024);
                 }

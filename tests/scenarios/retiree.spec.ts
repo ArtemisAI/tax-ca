@@ -44,7 +44,7 @@ describe('Tax Scenario Tests - Retiree', () => {
                 scenario.totalIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             // Should benefit from age credit and pension income credit
@@ -58,7 +58,7 @@ describe('Tax Scenario Tests - Retiree', () => {
                 scenario.totalIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             // Ontario seniors get additional credits
@@ -98,7 +98,7 @@ describe('Tax Scenario Tests - Retiree', () => {
         it('should calculate OAS clawback for high income', () => {
             // Test high income OAS clawback scenario
             const oasRepaymentRatio = OAS.REPAYMENT.RATIO;
-            
+
             // Calculate potential clawback manually
             const excessIncome = Math.max(0, scenario.totalIncome - OAS.REPAYMENT.MIN);
             const potentialClawback = excessIncome * oasRepaymentRatio;
@@ -116,7 +116,7 @@ describe('Tax Scenario Tests - Retiree', () => {
                 scenario.totalIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             const effectiveTaxRate = federalTax / scenario.totalIncome;

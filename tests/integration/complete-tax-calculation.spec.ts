@@ -26,10 +26,10 @@ describe('Integration Tests - Complete Tax Calculation', () => {
             const ympe = CPP.PENSIONABLE_EARNINGS.YMPE;
             const basicExemption = CPP.PENSIONABLE_EARNINGS.BASIC_EXEMPTION;
             const contributionRate = CPP.CONTRIBUTION_RATES.BASE;
-            
+
             const pensionableEarnings = Math.min(
                 Math.max(taxpayer.grossIncome - basicExemption, 0),
-                ympe - basicExemption
+                ympe - basicExemption,
             );
             const cppContribution = pensionableEarnings * contributionRate;
 
@@ -42,7 +42,7 @@ describe('Integration Tests - Complete Tax Calculation', () => {
                 taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                0 // Basic credits only for this test
+                0, // Basic credits only for this test
             );
 
             // Step 4: Calculate provincial tax
@@ -51,7 +51,7 @@ describe('Integration Tests - Complete Tax Calculation', () => {
                 taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                0 // Basic credits only
+                0, // Basic credits only
             );
 
             // Step 5: Verify calculations are reasonable
@@ -78,11 +78,11 @@ describe('Integration Tests - Complete Tax Calculation', () => {
         it('should validate RRSP contribution limits', () => {
             // Test RRSP contribution limit data
             const maxRrspContribution = RRSP.MAX_CONTRIBUTION;
-            
+
             // Calculate expected max contribution (18% of income, subject to maximum)
             const calculatedMax = Math.min(
                 taxpayer.grossIncome * 0.18, // 18% contribution rate
-                maxRrspContribution
+                maxRrspContribution,
             );
 
             // RRSP contribution should be within limits
@@ -117,7 +117,7 @@ describe('Integration Tests - Complete Tax Calculation', () => {
                 baseScenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                0
+                0,
             );
 
             // Federal tax should be the same across provinces (before abatement)
@@ -126,23 +126,21 @@ describe('Integration Tests - Complete Tax Calculation', () => {
         });
 
         it('should show provincial tax variations', () => {
-            const provincialTaxes = provinces.map(province => {
-                return {
+            const provincialTaxes = provinces.map((province) => ({
+                province,
+                tax: getProvincialTaxAmount(
                     province,
-                    tax: getProvincialTaxAmount(
-                        province,
-                        baseScenario.taxableIncome,
-                        inflationRate,
-                        yearsToInflate,
-                        0
-                    ),
-                };
-            });
+                    baseScenario.taxableIncome,
+                    inflationRate,
+                    yearsToInflate,
+                    0,
+                ),
+            }));
 
             // Alberta should have the lowest provincial tax (no provincial income tax)
-            const albertaTax = provincialTaxes.find(p => p.province === 'AB')?.tax || 0;
-            const ontarioTax = provincialTaxes.find(p => p.province === 'ON')?.tax || 0;
-            const quebecTax = provincialTaxes.find(p => p.province === 'QC')?.tax || 0;
+            const albertaTax = provincialTaxes.find((p) => p.province === 'AB')?.tax || 0;
+            const ontarioTax = provincialTaxes.find((p) => p.province === 'ON')?.tax || 0;
+            const quebecTax = provincialTaxes.find((p) => p.province === 'QC')?.tax || 0;
 
             // Alberta should have lower tax than others, Quebec highest
             expect(albertaTax).toBeGreaterThan(0); // Alberta does have some provincial tax

@@ -26,7 +26,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             // Expected federal tax for $52,000 income in 2024
@@ -43,7 +43,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             // Expected Ontario provincial tax for $52,000 income
@@ -60,7 +60,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             const provincialTax = getProvincialTaxAmount(
@@ -68,7 +68,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             const totalTax = federalTax + provincialTax;
@@ -98,7 +98,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.provincialTaxCredits
+                scenario.provincialTaxCredits,
             );
 
             // Quebec has higher provincial tax rates than Ontario
@@ -113,7 +113,7 @@ describe('Tax Scenario Tests - Young Professional', () => {
                 scenario.taxableIncome,
                 inflationRate,
                 yearsToInflate,
-                scenario.federalTaxCredits
+                scenario.federalTaxCredits,
             );
 
             // Federal tax in Quebec should be reduced by abatement
