@@ -19,3 +19,9 @@ dist/
 !**/.yarn/releases
 !**/.yarn/plugins
 !**/.yarn/sdks
+
+# Ignore Copilot guidelines for PR management
+.github/COPILOT_GUIDELINES.md
+
+# Ignore personal data folder used for tax processing
+personal_data/
