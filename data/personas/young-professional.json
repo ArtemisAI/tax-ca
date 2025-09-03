@@ -1,0 +1,142 @@
+{
+  "persona": {
+    "name": "Alex Chen",
+    "description": "Young Professional in Tech",
+    "demographics": {
+      "age": 26,
+      "maritalStatus": "single",
+      "location": "Toronto, ON",
+      "occupation": "Software Developer",
+      "children": 0
+    }
+  },
+  "taxpayer": {
+    "personalInfo": {
+      "sin": "123456789",
+      "firstName": "Alex",
+      "lastName": "Chen",
+      "dateOfBirth": "1998-03-15",
+      "province": "ON",
+      "postalCode": "M5V 3A8",
+      "maritalStatus": "single"
+    },
+    "taxYear": 2024,
+    "filingStatus": "individual"
+  },
+  "income": {
+    "employment": [
+      {
+        "employerName": "TechCorp Inc.",
+        "grossIncome": 58000,
+        "incomeTaxDeducted": 8700,
+        "cppContributions": 3754.45,
+        "eiContributions": 1049.12,
+        "pensionAdjustment": 2900
+      }
+    ],
+    "pension": {},
+    "investment": {
+      "interestIncome": 150,
+      "dividendIncome": 0,
+      "capitalGains": 0,
+      "capitalLosses": 0
+    },
+    "other": {}
+  },
+  "deductions": {
+    "rrsp": {
+      "contributions": 5200,
+      "availableRoom": 10440,
+      "carriedForwardRoom": 0
+    },
+    "childcare": {},
+    "medical": {
+      "totalExpenses": 800,
+      "premiums": 240
+    },
+    "charitable": {
+      "donations": 500,
+      "carriedForward": 0
+    },
+    "employment": {
+      "unionDues": 0,
+      "homeOffice": 400,
+      "travelExpenses": 0
+    },
+    "interest": {
+      "studentLoans": 1200,
+      "investmentLoans": 0
+    },
+    "other": {}
+  },
+  "expectedResults": {
+    "federal": {
+      "taxableIncome": 52950,
+      "taxOwing": 7942.50,
+      "nonRefundableCredits": 2208,
+      "netTax": 5734.50,
+      "refundableCredits": 0,
+      "finalTax": 5734.50
+    },
+    "provincial": {
+      "province": "ON",
+      "taxableIncome": 52950,
+      "taxOwing": 3392.25,
+      "nonRefundableCredits": 1154,
+      "netTax": 2238.25,
+      "refundableCredits": 0,
+      "finalTax": 2238.25
+    },
+    "combined": {
+      "totalTaxOwing": 11334.75,
+      "totalCredits": 3362,
+      "netTaxOwing": 7972.75,
+      "marginalRate": 0.2965,
+      "averageRate": 0.1505
+    },
+    "balanceOwing": -727.37,
+    "refundExpected": true
+  },
+  "testScenarios": [
+    {
+      "name": "Basic Tax Calculation",
+      "description": "Test standard employment income tax calculation",
+      "assertions": [
+        "Federal tax rate should be 15% on first bracket",
+        "Ontario tax rate should be 5.05% on first bracket",
+        "RRSP deduction should reduce taxable income"
+      ]
+    },
+    {
+      "name": "Student Loan Interest",
+      "description": "Test student loan interest deduction",
+      "assertions": [
+        "Student loan interest should provide tax credit",
+        "Credit should be 15% of eligible interest"
+      ]
+    },
+    {
+      "name": "CPP/EI Contributions",
+      "description": "Test CPP and EI contribution calculations",
+      "assertions": [
+        "CPP contributions should be within annual maximum",
+        "EI contributions should be calculated correctly",
+        "Over-contributions should result in refund"
+      ]
+    },
+    {
+      "name": "Home Office Deduction",
+      "description": "Test home office expense deduction for remote work",
+      "assertions": [
+        "Home office expenses should be deductible",
+        "Deduction should reduce taxable income"
+      ]
+    }
+  ],
+  "notes": [
+    "Typical scenario for young professional with student debt",
+    "Tests basic tax brackets and common deductions",
+    "Should result in small refund due to over-withholding",
+    "RRSP contribution creates tax savings for future planning"
+  ]
+}

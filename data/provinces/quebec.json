@@ -1,0 +1,256 @@
+{
+  "province": "QC",
+  "name": "Quebec",
+  "taxYear": 2024,
+  "basicPersonalAmount": 18056,
+  "federalAbatement": 0.165,
+  "taxBrackets": [
+    {
+      "min": 0,
+      "max": 51780,
+      "rate": 0.14,
+      "description": "First tax bracket"
+    },
+    {
+      "min": 51780,
+      "max": 103545,
+      "rate": 0.19,
+      "description": "Second tax bracket"
+    },
+    {
+      "min": 103545,
+      "max": 126000,
+      "rate": 0.24,
+      "description": "Third tax bracket"
+    },
+    {
+      "min": 126000,
+      "max": null,
+      "rate": 0.2575,
+      "description": "Top tax bracket"
+    }
+  ],
+  "credits": {
+    "basicPersonal": {
+      "amount": 18056,
+      "creditRate": 0.14,
+      "description": "Basic personal amount credit"
+    },
+    "spousal": {
+      "maxAmount": 18056,
+      "creditRate": 0.14,
+      "incomeThreshold": 1036,
+      "description": "Spousal amount credit"
+    },
+    "age": {
+      "maxAmount": 3037,
+      "creditRate": 0.14,
+      "incomeThreshold": 43906,
+      "clawbackRate": 0.15,
+      "description": "Age amount for seniors 65+"
+    },
+    "pensionIncome": {
+      "maxAmount": 2692,
+      "creditRate": 0.14,
+      "description": "Pension income amount"
+    },
+    "living": {
+      "single": {
+        "maxAmount": 1680,
+        "creditRate": 0.14,
+        "incomeThreshold": 22945,
+        "clawbackRate": 0.15
+      },
+      "family": {
+        "maxAmount": 2055,
+        "creditRate": 0.14,
+        "incomeThreshold": 37345,
+        "clawbackRate": 0.15
+      },
+      "description": "Amount for living alone or single-parent family"
+    },
+    "retirement": {
+      "maxAmount": 3037,
+      "creditRate": 0.14,
+      "incomeThreshold": 38395,
+      "clawbackRate": 0.15,
+      "description": "Retirement income amount"
+    }
+  },
+  "refundableCredits": {
+    "solidarity": {
+      "single": {
+        "maxCredit": 357,
+        "incomeThreshold": 24265,
+        "clawbackRate": 0.03
+      },
+      "couple": {
+        "maxCredit": 566,
+        "incomeThreshold": 39490,
+        "clawbackRate": 0.03
+      },
+      "description": "Quebec solidarity tax credit"
+    },
+    "workPremium": {
+      "single": {
+        "maxCredit": 801,
+        "earnedIncomeThreshold": 2400,
+        "maxIncomeThreshold": 19885
+      },
+      "family": {
+        "maxCredit": 1305,
+        "earnedIncomeThreshold": 3600,
+        "maxIncomeThreshold": 32735
+      },
+      "description": "Work premium tax credit"
+    }
+  },
+  "contributions": {
+    "qpp": {
+      "rate": 0.0595,
+      "maxPensionableEarnings": 68500,
+      "basicExemption": 3500,
+      "maxContribution": 3867.50,
+      "description": "Quebec Pension Plan contributions"
+    },
+    "qpip": {
+      "employee": {
+        "rate": 0.00494,
+        "maxInsurableEarnings": 94000,
+        "maxContribution": 464.36
+      },
+      "selfEmployed": {
+        "rate": 0.00878,
+        "maxInsurableEarnings": 94000,
+        "maxContribution": 825.32
+      },
+      "description": "Quebec Parental Insurance Plan"
+    },
+    "healthServices": {
+      "rate": 0.01,
+      "threshold": 19000,
+      "exemption": 1000,
+      "description": "Health services fund contribution"
+    }
+  },
+  "deductions": {
+    "rrq": {
+      "description": "Quebec Pension Plan contributions are deductible",
+      "sameasCPP": true
+    },
+    "qpip": {
+      "description": "QPIP premiums are deductible",
+      "unique": true
+    },
+    "unionDues": {
+      "description": "Union and professional dues",
+      "limit": "reasonable amount"
+    },
+    "childcareExpenses": {
+      "description": "Childcare expenses with different limits than federal",
+      "ageBasedLimits": true
+    }
+  },
+  "specialProvisions": {
+    "federalAbatement": {
+      "rate": 0.165,
+      "description": "16.5% abatement of federal tax for Quebec residents"
+    },
+    "medicalExpenses": {
+      "threshold": 0.03,
+      "description": "3% of family income threshold"
+    },
+    "charitableDonations": {
+      "firstBracket": {
+        "threshold": 200,
+        "rate": 0.14
+      },
+      "higherBracket": {
+        "rate": 0.25,
+        "description": "Rate for donations over $200"
+      }
+    },
+    "tuitionCredit": {
+      "rate": 0.14,
+      "transferable": true,
+      "carryforward": true
+    }
+  },
+  "calculationNotes": [
+    "Quebec operates its own tax collection system",
+    "Federal abatement of 16.5% applies to reduce federal tax",
+    "Quebec has its own pension plan (QPP) instead of CPP",
+    "Quebec Parental Insurance Plan (QPIP) is unique to Quebec",
+    "Health services fund contribution applies to higher income earners",
+    "Quebec basic personal amount is higher than federal",
+    "Many Quebec credits have different rates and thresholds than federal",
+    "Quebec solidarity tax credit replaces GST credit for Quebec residents"
+  ],
+  "combinedMarginalRates": {
+    "2024": [
+      {
+        "incomeRange": "0 - 18,056",
+        "federalRate": 0.0,
+        "provincialRate": 0.0,
+        "combinedRate": 0.0,
+        "note": "Below basic personal amounts"
+      },
+      {
+        "incomeRange": "18,056 - 51,780",
+        "federalRate": 0.1252,
+        "provincialRate": 0.14,
+        "combinedRate": 0.2652,
+        "note": "Federal rate reduced by Quebec abatement"
+      },
+      {
+        "incomeRange": "51,780 - 53,359",
+        "federalRate": 0.1252,
+        "provincialRate": 0.19,
+        "combinedRate": 0.3152,
+        "note": "Quebec second bracket begins"
+      },
+      {
+        "incomeRange": "53,359 - 103,545",
+        "federalRate": 0.1712,
+        "provincialRate": 0.19,
+        "combinedRate": 0.3612,
+        "note": "Federal second bracket (with abatement)"
+      },
+      {
+        "incomeRange": "103,545 - 106,717",
+        "federalRate": 0.1712,
+        "provincialRate": 0.24,
+        "combinedRate": 0.4112,
+        "note": "Quebec third bracket begins"
+      },
+      {
+        "incomeRange": "106,717 - 126,000",
+        "federalRate": 0.2171,
+        "provincialRate": 0.24,
+        "combinedRate": 0.4571,
+        "note": "Federal third bracket (with abatement)"
+      },
+      {
+        "incomeRange": "126,000 - 165,026",
+        "federalRate": 0.2171,
+        "provincialRate": 0.2575,
+        "combinedRate": 0.4746,
+        "note": "Quebec top bracket begins"
+      },
+      {
+        "incomeRange": "165,026 - 235,026",
+        "federalRate": 0.2421,
+        "provincialRate": 0.2575,
+        "combinedRate": 0.4996,
+        "note": "Federal fourth bracket (with abatement)"
+      },
+      {
+        "incomeRange": "235,026+",
+        "federalRate": 0.2755,
+        "provincialRate": 0.2575,
+        "combinedRate": 0.533,
+        "note": "Federal top bracket (with abatement)"
+      }
+    ]
+  }
+}

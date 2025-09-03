@@ -1,0 +1,159 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "income-schema.json",
+  "title": "Canadian Income Sources",
+  "description": "Schema for all types of income sources in Canadian tax calculations",
+  "type": "object",
+  "properties": {
+    "employment": {
+      "type": "array",
+      "description": "Employment income from T4 slips",
+      "items": {
+        "type": "object",
+        "properties": {
+          "employerName": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Name of the employer"
+          },
+          "grossIncome": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000000,
+            "description": "Gross employment income"
+          },
+          "incomeTaxDeducted": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Income tax deducted at source"
+          },
+          "cppContributions": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Canada Pension Plan contributions"
+          },
+          "eiContributions": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5000,
+            "description": "Employment Insurance contributions"
+          },
+          "pensionAdjustment": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Pension adjustment for RRSP room calculation"
+          }
+        },
+        "required": ["grossIncome"],
+        "additionalProperties": false
+      }
+    },
+    "pension": {
+      "type": "object",
+      "description": "Pension and retirement income",
+      "properties": {
+        "cpp": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Canada Pension Plan benefits"
+        },
+        "oas": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10000,
+          "description": "Old Age Security benefits"
+        },
+        "employerPension": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Employer pension benefits"
+        },
+        "rrif": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Registered Retirement Income Fund withdrawals"
+        },
+        "foreignPension": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Foreign pension income"
+        }
+      },
+      "additionalProperties": false
+    },
+    "investment": {
+      "type": "object",
+      "description": "Investment income and capital gains",
+      "properties": {
+        "interestIncome": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Interest income from investments"
+        },
+        "dividendIncome": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Dividend income (actual amount received)"
+        },
+        "eligibleDividends": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Eligible dividends for enhanced dividend tax credit"
+        },
+        "capitalGains": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Capital gains realized in the tax year"
+        },
+        "capitalLosses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Capital losses realized in the tax year"
+        },
+        "carriedForwardLosses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Capital losses carried forward from previous years"
+        }
+      },
+      "additionalProperties": false
+    },
+    "other": {
+      "type": "object",
+      "description": "Other income sources",
+      "properties": {
+        "selfEmployment": {
+          "type": "number",
+          "description": "Net self-employment income"
+        },
+        "rentalIncome": {
+          "type": "number",
+          "description": "Net rental income"
+        },
+        "businessIncome": {
+          "type": "number",
+          "description": "Business income"
+        },
+        "ei": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Employment Insurance benefits"
+        },
+        "socialAssistance": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Social assistance payments"
+        },
+        "workersCompensation": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Workers' compensation benefits"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,271 @@
+{
+  "scenario": "Complex Investment Portfolio",
+  "description": "High-income taxpayer with diverse investment income types and tax optimization strategies",
+  "applicability": "Wealthy investors with complex portfolios",
+  "taxYear": 2024,
+  "testCase": {
+    "taxpayer": {
+      "personalInfo": {
+        "sin": "888888888",
+        "firstName": "Investment",
+        "lastName": "Advisor",
+        "dateOfBirth": "1975-04-20",
+        "province": "BC",
+        "postalCode": "V6E 1V9",
+        "maritalStatus": "married"
+      },
+      "taxYear": 2024,
+      "filingStatus": "individual"
+    },
+    "income": {
+      "employment": [
+        {
+          "employerName": "Financial Services Corp",
+          "grossIncome": 120000,
+          "incomeTaxDeducted": 24000,
+          "cppContributions": 3754.45,
+          "eiContributions": 1357.50,
+          "pensionAdjustment": 12000
+        }
+      ],
+      "investment": {
+        "interestIncome": 8500,
+        "dividendIncome": 15000,
+        "eligibleDividends": 12000,
+        "nonEligibleDividends": 3000,
+        "capitalGains": 25000,
+        "capitalLosses": 5000,
+        "carriedForwardLosses": 8000,
+        "foreignInvestmentIncome": 4200,
+        "foreignTaxPaid": 630
+      },
+      "other": {
+        "rentalIncome": 18000,
+        "businessIncome": 15000
+      }
+    },
+    "deductions": {
+      "rrsp": {
+        "contributions": 18000,
+        "availableRoom": 21600,
+        "carriedForwardRoom": 5000
+      },
+      "investmentExpenses": {
+        "managementFees": 3200,
+        "advisoryFees": 1800,
+        "safetyDepositBox": 120,
+        "investmentCounsel": 2400
+      },
+      "rentalExpenses": {
+        "propertyTaxes": 4200,
+        "maintenance": 2800,
+        "insurance": 1200,
+        "managementFees": 2160,
+        "depreciation": 3600
+      },
+      "businessExpenses": {
+        "officeExpenses": 2400,
+        "professionalFees": 1800,
+        "travelExpenses": 3200
+      },
+      "interest": {
+        "investmentLoans": 8400,
+        "rentalPropertyMortgage": 9600
+      },
+      "charitable": {
+        "donations": 8000,
+        "carriedForward": 3000
+      }
+    }
+  },
+  "expectedRanges": {
+    "totalIncome": {
+      "min": 200000,
+      "max": 210000,
+      "description": "Employment + investment + rental + business income"
+    },
+    "totalDeductions": {
+      "min": 35000,
+      "max": 45000,
+      "description": "RRSP + investment expenses + rental expenses + business expenses"
+    },
+    "taxableIncome": {
+      "min": 165000,
+      "max": 175000,
+      "description": "After all deductions"
+    },
+    "federalTax": {
+      "min": 35000,
+      "max": 42000,
+      "description": "High tax bracket federal tax"
+    },
+    "provincialTax": {
+      "min": 15000,
+      "max": 20000,
+      "description": "BC provincial tax including high-income surtax"
+    },
+    "totalTax": {
+      "min": 50000,
+      "max": 62000,
+      "description": "Combined federal and provincial"
+    },
+    "marginalRate": {
+      "min": 0.43,
+      "max": 0.50,
+      "description": "High marginal tax rate"
+    }
+  },
+  "testAssertions": [
+    {
+      "category": "Investment Income Taxation",
+      "tests": [
+        "Eligible dividends should be grossed up by 38%",
+        "Non-eligible dividends should be grossed up by 15%",
+        "Capital gains should be 50% taxable",
+        "Capital losses should offset capital gains",
+        "Carried forward losses should be applied",
+        "Interest income should be fully taxable"
+      ]
+    },
+    {
+      "category": "Dividend Tax Credit",
+      "tests": [
+        "Federal dividend tax credit should be 25% of gross-up for eligible dividends",
+        "Federal dividend tax credit should be 10.52% of gross-up for non-eligible dividends",
+        "Provincial dividend tax credit should apply",
+        "Credits should significantly reduce tax on dividend income"
+      ]
+    },
+    {
+      "category": "Foreign Investment Income",
+      "tests": [
+        "Foreign investment income should be fully taxable",
+        "Foreign tax paid should provide credit against Canadian tax",
+        "Foreign tax credit should not exceed Canadian tax on foreign income",
+        "Exchange rate conversions should be properly handled"
+      ]
+    },
+    {
+      "category": "Investment Expense Deductions",
+      "tests": [
+        "Investment management fees should be deductible",
+        "Advisory fees should be deductible",
+        "Interest on investment loans should be deductible",
+        "Safety deposit box fees should be deductible"
+      ]
+    },
+    {
+      "category": "Rental Income and Expenses",
+      "tests": [
+        "Rental income should be fully taxable",
+        "All reasonable rental expenses should be deductible",
+        "Depreciation should be calculated correctly",
+        "Net rental income should be integrated with other income"
+      ]
+    },
+    {
+      "category": "Business Income Integration",
+      "tests": [
+        "Business income should be fully taxable",
+        "Business expenses should be deductible",
+        "CPP contributions should be calculated on business income",
+        "Net business income should integrate with employment income"
+      ]
+    },
+    {
+      "category": "Tax Optimization",
+      "tests": [
+        "RRSP contribution should provide maximum tax savings",
+        "Charitable donation credit should be optimized",
+        "Loss utilization should be maximized",
+        "Income splitting opportunities should be identified"
+      ]
+    }
+  ],
+  "complexCalculations": {
+    "dividendGrossUp": {
+      "eligibleDividends": {
+        "grossUpRate": 1.38,
+        "federalCredit": 0.25,
+        "example": "12000 * 1.38 = 16560 taxable, credit = 4560 * 0.25 = 1140"
+      },
+      "nonEligibleDividends": {
+        "grossUpRate": 1.15,
+        "federalCredit": 0.1052,
+        "example": "3000 * 1.15 = 3450 taxable, credit = 450 * 0.1052 = 47"
+      }
+    },
+    "capitalGains": {
+      "inclusionRate": 0.5,
+      "grossGains": 25000,
+      "losses": 5000,
+      "carriedForwardLosses": 8000,
+      "netTaxableGains": "(25000 - 5000 - 8000) * 0.5 = 6000"
+    },
+    "foreignTaxCredit": {
+      "foreignIncome": 4200,
+      "foreignTaxPaid": 630,
+      "canadianTaxOnForeignIncome": "4200 * marginalRate",
+      "creditAllowed": "min(630, canadianTaxOnForeignIncome)"
+    }
+  },
+  "variations": [
+    {
+      "name": "Capital Loss Year",
+      "changes": {
+        "income.investment.capitalGains": 5000,
+        "income.investment.capitalLosses": 30000
+      },
+      "expectedChanges": {
+        "taxableCapitalGains": 0,
+        "unusedCapitalLosses": "Carried forward to future years"
+      }
+    },
+    {
+      "name": "No Investment Expenses",
+      "changes": {
+        "deductions.investmentExpenses": {},
+        "deductions.interest.investmentLoans": 0
+      },
+      "expectedChanges": {
+        "taxableIncome": "Higher by ~$16,000",
+        "totalTax": "Higher by ~$7,000"
+      }
+    },
+    {
+      "name": "Ontario Resident",
+      "changes": {
+        "taxpayer.personalInfo.province": "ON",
+        "taxpayer.personalInfo.postalCode": "M5H 2N2"
+      },
+      "expectedChanges": {
+        "provincialTax": "Different due to Ontario tax brackets",
+        "marginalRate": "Different provincial component"
+      }
+    }
+  ],
+  "performanceTargets": {
+    "calculationTime": {
+      "target": "< 150ms",
+      "description": "Complex investment calculations may take longer"
+    },
+    "memoryUsage": {
+      "target": "< 5MB",
+      "description": "More memory needed for complex calculations"
+    },
+    "accuracy": {
+      "target": "±$10",
+      "description": "Complex calculations allow slightly larger variance"
+    }
+  },
+  "notes": [
+    "Tests comprehensive investment income taxation including all major types",
+    "Dividend tax credit calculations are complex but crucial for accuracy",
+    "Capital gains and losses require careful tracking and application",
+    "Foreign investment income adds international tax credit complexity",
+    "Investment expenses can significantly reduce taxable income",
+    "Rental and business income integration tests multiple income streams",
+    "High marginal rates make tax optimization strategies very valuable",
+    "This scenario represents sophisticated tax planning requirements"
+  ]
+}

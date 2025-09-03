@@ -1,0 +1,241 @@
+{
+  "province": "ON",
+  "name": "Ontario",
+  "taxYear": 2024,
+  "basicPersonalAmount": 12298,
+  "taxBrackets": [
+    {
+      "min": 0,
+      "max": 51446,
+      "rate": 0.0505,
+      "description": "First tax bracket"
+    },
+    {
+      "min": 51446,
+      "max": 102894,
+      "rate": 0.0915,
+      "description": "Second tax bracket"
+    },
+    {
+      "min": 102894,
+      "max": 150000,
+      "rate": 0.1116,
+      "description": "Third tax bracket"
+    },
+    {
+      "min": 150000,
+      "max": 220000,
+      "rate": 0.1216,
+      "description": "Fourth tax bracket"
+    },
+    {
+      "min": 220000,
+      "max": null,
+      "rate": 0.1316,
+      "description": "Top tax bracket"
+    }
+  ],
+  "credits": {
+    "basicPersonal": {
+      "amount": 12298,
+      "creditRate": 0.0505,
+      "description": "Basic personal amount credit"
+    },
+    "spousal": {
+      "maxAmount": 10582,
+      "creditRate": 0.0505,
+      "incomeThreshold": 1036,
+      "description": "Spousal amount credit"
+    },
+    "age": {
+      "maxAmount": 5654,
+      "creditRate": 0.0505,
+      "incomeThreshold": 43906,
+      "clawbackRate": 0.15,
+      "description": "Age amount for seniors 65+"
+    },
+    "pensionIncome": {
+      "maxAmount": 1462,
+      "creditRate": 0.0505,
+      "description": "Pension income amount"
+    },
+    "caregiver": {
+      "maxAmount": 4986,
+      "creditRate": 0.0505,
+      "incomeThreshold": 18508,
+      "description": "Caregiver amount"
+    },
+    "disability": {
+      "amount": 9519,
+      "creditRate": 0.0505,
+      "transferable": true,
+      "description": "Disability amount"
+    }
+  },
+  "refundableCredits": {
+    "lowIncomeHealthCredit": {
+      "single": {
+        "maxCredit": 300,
+        "incomeThreshold": 20000,
+        "clawbackRate": 0.25
+      },
+      "family": {
+        "maxCredit": 450,
+        "incomeThreshold": 25000,
+        "clawbackRate": 0.25
+      }
+    },
+    "seniorHomeownersPropertyTax": {
+      "maxCredit": 500,
+      "incomeThreshold": 35000,
+      "clawbackRate": 0.25,
+      "description": "Property tax credit for seniors"
+    }
+  },
+  "surtax": {
+    "threshold1": 5315,
+    "rate1": 0.20,
+    "threshold2": 6802,
+    "rate2": 0.36,
+    "description": "Ontario surtax on provincial tax"
+  },
+  "healthPremium": {
+    "brackets": [
+      {
+        "min": 0,
+        "max": 20000,
+        "premium": 0
+      },
+      {
+        "min": 20000,
+        "max": 25000,
+        "premium": 300
+      },
+      {
+        "min": 25000,
+        "max": 36000,
+        "premium": 450
+      },
+      {
+        "min": 36000,
+        "max": 48000,
+        "premium": 600
+      },
+      {
+        "min": 48000,
+        "max": 72000,
+        "premium": 750
+      },
+      {
+        "min": 72000,
+        "max": 200000,
+        "premium": 900
+      },
+      {
+        "min": 200000,
+        "max": null,
+        "premium": 900
+      }
+    ]
+  },
+  "specialProvisions": {
+    "tuitionCredit": {
+      "rate": 0.0505,
+      "transferable": true,
+      "carryforward": true,
+      "description": "Ontario tuition tax credit"
+    },
+    "politicalContribution": {
+      "maxCredit": 500,
+      "rate": 0.75,
+      "description": "Political contribution tax credit"
+    },
+    "cooperativeEducation": {
+      "creditPerStudent": 1000,
+      "description": "Co-operative education tax credit for employers"
+    }
+  },
+  "calculationNotes": [
+    "Ontario uses a progressive tax system with five brackets",
+    "Surtax applies to provincial tax over specified thresholds",
+    "Health premium is based on taxable income and is non-refundable",
+    "Low-income health credit helps offset health premium for low-income earners",
+    "Senior homeowners may be eligible for property tax credit",
+    "Many credits are transferable between spouses",
+    "Ontario harmonized with federal basic personal amount changes"
+  ],
+  "combinedMarginalRates": {
+    "2024": [
+      {
+        "incomeRange": "0 - 15,000",
+        "federalRate": 0.0,
+        "provincialRate": 0.0,
+        "combinedRate": 0.0,
+        "note": "Below basic personal amounts"
+      },
+      {
+        "incomeRange": "15,000 - 51,446",
+        "federalRate": 0.15,
+        "provincialRate": 0.0505,
+        "combinedRate": 0.2005,
+        "note": "First combined bracket"
+      },
+      {
+        "incomeRange": "51,446 - 53,359",
+        "federalRate": 0.15,
+        "provincialRate": 0.0915,
+        "combinedRate": 0.2415,
+        "note": "Ontario second bracket begins"
+      },
+      {
+        "incomeRange": "53,359 - 102,894",
+        "federalRate": 0.205,
+        "provincialRate": 0.0915,
+        "combinedRate": 0.2965,
+        "note": "Federal second bracket begins"
+      },
+      {
+        "incomeRange": "102,894 - 106,717",
+        "federalRate": 0.205,
+        "provincialRate": 0.1116,
+        "combinedRate": 0.3166,
+        "note": "Ontario third bracket begins"
+      },
+      {
+        "incomeRange": "106,717 - 150,000",
+        "federalRate": 0.26,
+        "provincialRate": 0.1116,
+        "combinedRate": 0.3716,
+        "note": "Federal third bracket begins"
+      },
+      {
+        "incomeRange": "150,000 - 165,026",
+        "federalRate": 0.26,
+        "provincialRate": 0.1216,
+        "combinedRate": 0.3816,
+        "note": "Ontario fourth bracket begins"
+      },
+      {
+        "incomeRange": "165,026 - 220,000",
+        "federalRate": 0.29,
+        "provincialRate": 0.1216,
+        "combinedRate": 0.4116,
+        "note": "Federal fourth bracket begins"
+      },
+      {
+        "incomeRange": "220,000 - 235,026",
+        "federalRate": 0.29,
+        "provincialRate": 0.1316,
+        "combinedRate": 0.4216,
+        "note": "Ontario top bracket begins"
+      },
+      {
+        "incomeRange": "235,026+",
+        "federalRate": 0.33,
+        "provincialRate": 0.1316,
+        "combinedRate": 0.4616,
+        "note": "Federal top bracket begins"
+      }
+    ]
+  }
+}

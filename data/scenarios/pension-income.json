@@ -1,0 +1,275 @@
+{
+  "scenario": "Comprehensive Pension Income",
+  "description": "Senior taxpayer with multiple pension sources and retirement income optimization",
+  "applicability": "Retirees with employer pensions, government benefits, and RRIF withdrawals",
+  "taxYear": 2024,
+  "testCase": {
+    "taxpayer": {
+      "personalInfo": {
+        "sin": "777777777",
+        "firstName": "Pension",
+        "lastName": "Recipient",
+        "dateOfBirth": "1954-07-15",
+        "province": "ON",
+        "postalCode": "K2P 0B6",
+        "maritalStatus": "married"
+      },
+      "taxYear": 2024,
+      "filingStatus": "individual"
+    },
+    "spouse": {
+      "personalInfo": {
+        "sin": "777777778",
+        "firstName": "Spouse",
+        "lastName": "Recipient",
+        "dateOfBirth": "1957-03-22",
+        "province": "ON",
+        "maritalStatus": "married"
+      }
+    },
+    "income": {
+      "employment": [],
+      "pension": {
+        "cpp": 12000,
+        "oas": 7200,
+        "employerPension": 48000,
+        "rrif": 22000,
+        "foreignPension": 8400
+      },
+      "investment": {
+        "interestIncome": 2400,
+        "dividendIncome": 3600,
+        "eligibleDividends": 3600
+      },
+      "other": {}
+    },
+    "spouseIncome": {
+      "pension": {
+        "cpp": 8500,
+        "oas": 7200,
+        "employerPension": 18000
+      },
+      "investment": {
+        "interestIncome": 1200
+      }
+    },
+    "deductions": {
+      "rrsp": {
+        "contributions": 0,
+        "availableRoom": 0,
+        "carriedForwardRoom": 0
+      },
+      "pensionIncomeSplitting": {
+        "employerPension": 24000,
+        "rrif": 11000,
+        "allocatedToSpouse": 35000
+      },
+      "medical": {
+        "totalExpenses": 6800,
+        "premiums": 2400
+      },
+      "charitable": {
+        "donations": 3600,
+        "carriedForward": 1200
+      },
+      "interest": {
+        "investmentLoans": 0
+      },
+      "other": {}
+    }
+  },
+  "expectedRanges": {
+    "totalIncome": {
+      "min": 103000,
+      "max": 105000,
+      "description": "All pension sources + investment income"
+    },
+    "pensionIncomeSplitting": {
+      "min": 30000,
+      "max": 40000,
+      "description": "Amount allocated to lower-income spouse"
+    },
+    "adjustedIncome": {
+      "min": 65000,
+      "max": 70000,
+      "description": "After pension income splitting"
+    },
+    "oasClawback": {
+      "min": 0,
+      "max": 2000,
+      "description": "Potential OAS clawback after splitting"
+    },
+    "federalTax": {
+      "min": 8000,
+      "max": 12000,
+      "description": "Federal tax after credits and splitting"
+    },
+    "provincialTax": {
+      "min": 3000,
+      "max": 5000,
+      "description": "Ontario provincial tax"
+    },
+    "totalTax": {
+      "min": 11000,
+      "max": 17000,
+      "description": "Combined federal and provincial"
+    }
+  },
+  "testAssertions": [
+    {
+      "category": "Pension Income Types",
+      "tests": [
+        "CPP should be fully taxable",
+        "OAS should be fully taxable but subject to clawback",
+        "Employer pension should be fully taxable",
+        "RRIF withdrawals should be fully taxable",
+        "Foreign pension should be taxable with potential tax treaty benefits"
+      ]
+    },
+    {
+      "category": "Pension Income Splitting",
+      "tests": [
+        "Employer pension should be eligible for splitting",
+        "RRIF income should be eligible for splitting",
+        "Up to 50% can be allocated to spouse",
+        "CPP and OAS are not eligible for splitting",
+        "Foreign pension eligibility depends on tax treaty"
+      ]
+    },
+    {
+      "category": "OAS Clawback Calculation",
+      "tests": [
+        "Clawback threshold should be $86,912 for 2024",
+        "Clawback rate should be 15% of excess income",
+        "Income for clawback should be before pension splitting",
+        "Clawback should not exceed total OAS benefit",
+        "Clawback should be recoverable on tax return"
+      ]
+    },
+    {
+      "category": "Senior Tax Credits",
+      "tests": [
+        "Age amount should be available for taxpayers 65+",
+        "Pension income amount should apply to eligible pension income",
+        "Age amount may be reduced by high income",
+        "Spouse may claim unused credits from taxpayer"
+      ]
+    },
+    {
+      "category": "Medical Expense Credit",
+      "tests": [
+        "Medical expense threshold should be $2,479 or 3% of net income",
+        "Expenses above threshold should qualify for 15% credit",
+        "Medical insurance premiums should qualify",
+        "Expenses can be claimed by either spouse"
+      ]
+    },
+    {
+      "category": "Foreign Pension Treatment",
+      "tests": [
+        "Foreign pension should be converted to Canadian dollars",
+        "Tax treaty may reduce withholding tax",
+        "Foreign tax paid may provide credit",
+        "Some foreign pensions may qualify for pension income amount"
+      ]
+    },
+    {
+      "category": "Optimal Income Splitting",
+      "tests": [
+        "Splitting should minimize combined tax",
+        "Should consider impact on OAS clawback",
+        "Should consider impact on other income-tested benefits",
+        "Should maximize use of tax credits"
+      ]
+    }
+  ],
+  "optimizationStrategies": {
+    "pensionIncomeSplitting": {
+      "eligibleIncome": 70000,
+      "maxSplittable": 35000,
+      "optimalSplit": "Amount that equalizes marginal tax rates",
+      "considerations": [
+        "OAS clawback impact",
+        "Age amount clawback",
+        "Provincial tax rates",
+        "Other income-tested benefits"
+      ]
+    },
+    "withdrawalTiming": {
+      "rrif": {
+        "minimumWithdrawal": "Based on age and account balance",
+        "taxImplications": "Fully taxable as pension income",
+        "splittingEligibility": "Eligible after age 65"
+      },
+      "oasDeferred": {
+        "option": "Defer OAS to age 70",
+        "benefit": "7.2% increase per year of deferral",
+        "consideration": "Only beneficial if clawback would apply"
+      }
+    },
+    "medicalExpenses": {
+      "timing": "Can claim expenses in any 12-month period ending in tax year",
+      "spousalClaiming": "Claim on return of spouse with lower net income",
+      "optimization": "Bunch expenses in single year if possible"
+    }
+  },
+  "variations": [
+    {
+      "name": "No Pension Splitting",
+      "changes": {
+        "deductions.pensionIncomeSplitting": {}
+      },
+      "expectedChanges": {
+        "oasClawback": "Higher clawback on higher income",
+        "totalTax": "Higher combined tax for couple"
+      }
+    },
+    {
+      "name": "High Income Clawback",
+      "changes": {
+        "income.pension.employerPension": 80000,
+        "income.pension.rrif": 35000
+      },
+      "expectedChanges": {
+        "oasClawback": "Full OAS clawback likely",
+        "ageAmount": "Reduced or eliminated due to high income"
+      }
+    },
+    {
+      "name": "Quebec Resident",
+      "changes": {
+        "taxpayer.personalInfo.province": "QC",
+        "taxpayer.personalInfo.postalCode": "G1R 2B5"
+      },
+      "expectedChanges": {
+        "federalTax": "Lower due to Quebec abatement",
+        "provincialTax": "Higher Quebec provincial rates",
+        "pensionSplitting": "Quebec has different rules for pension splitting"
+      }
+    }
+  ],
+  "performanceTargets": {
+    "calculationTime": {
+      "target": "< 100ms",
+      "description": "Pension income calculations are straightforward"
+    },
+    "memoryUsage": {
+      "target": "< 2MB",
+      "description": "Moderate memory usage for pension calculations"
+    },
+    "accuracy": {
+      "target": "±$5",
+      "description": "Pension calculations should be very accurate"
+    }
+  },
+  "notes": [
+    "Tests comprehensive pension income taxation and optimization",
+    "Pension income splitting is crucial for tax minimization in retirement",
+    "OAS clawback calculations are complex but important for high-income seniors",
+    "Age-related credits provide significant tax relief for seniors",
+    "Foreign pension income adds complexity with tax treaties",
+    "Medical expenses become more significant in retirement",
+    "RRIF minimum withdrawals are mandatory and must be planned for",
+    "Optimal tax strategies require considering both spouses' situations"
+  ]
+}
